@@ -92,7 +92,7 @@ case $MODE in
         sh ./script/creationBesu.sh
 
         docker compose down -v
-        docker compose up -d create-node
+        docker compose up -d create-qbft
         docker compose start create-qbft
         ;;
     join)
