@@ -15,7 +15,7 @@ echo "$ENODE@$IP:$2" > $1/data/enodeUrl.txt
 
 # Extract public key from enode URL
 PUBLIC_KEY=$(echo $ENODE | sed 's/enode:\/\///')
-echo "$PUBLIC_KEY" > $1/data/publicKey.txt
+echo "0x$PUBLIC_KEY" > $1/data/publicKey.txt
 
 # Try to extract private key from logs
 PRIVATE_KEY=$(docker compose logs | grep -i "private key" | grep -oE "0x[0-9a-fA-F]{64}" | head -1)
