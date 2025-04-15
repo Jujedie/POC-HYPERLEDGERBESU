@@ -99,7 +99,7 @@ case $MODE in
         docker compose up -d create-qbft
         docker compose start create-qbft
 
-        sh ./script/recuperationEnode.sh "./data-node/Node-${numDir}" "$P2P_PORT"
+        sh ./script/recuperationEnode.sh "./data-node/Node-${NUM_DIR}" "$P2P_PORT"
         ;;
     join)
         echo "Rejoindre une blockchain existante avec enode: $ENODE_URL"
@@ -107,7 +107,7 @@ case $MODE in
         if [ "$IS_BOOT" = "true" ]; then
             docker compose up -d join-bootnode
             docker compose start join-bootnode
-            sh ./script/recuperationEnode.sh "./data-node/Node-${numDir}" "$P2P_PORT"
+            sh ./script/recuperationEnode.sh "./data-node/Node-${NUM_DIR}" "$P2P_PORT"
         else
             docker compose up -d join-node
             docker compose start join-node
