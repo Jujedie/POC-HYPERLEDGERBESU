@@ -1,0 +1,90 @@
+services:
+  create-qbft:
+    image: hyperledger/besu:latest
+
+    command: ["--data-path=data/Node-${NUM_DIR}",
+              "--genesis-file=config/genesis.json",
+              "--rpc-http-enabled",
+              "--rpc-http-api=ETH,NET,QBFT",
+              "--host-allowlist=\"*\"",
+              "--rpc-http-cors-origins=\"all\"",
+              "--rpc-http-port=${RPC_PORT}",
+              "--p2p-port=${P2P_PORT}",
+              "--profile=ENTERPRISE",
+              "--node-private-key-file=/opt/besu/Node-${NUM_DIR}/data/private_key"]
+
+    volumes:
+      - ./config:/opt/besu/config
+      - ./data-node:/opt/besu/data
+      - ./script:/opt/besu/script
+    
+    ports:
+      - ${RPC_PORT}:${RPC_PORT}
+      - ${P2P_PORT}:${P2P_PORT}
+  join-bootnode:
+    image: hyperledger/besu:latest
+    
+    command: ["--data-path=Node-${NUM_DIR}",
+              "--genesis-file=config/genesis.json",
+              "--rpc-http-enabled",
+              "--rpc-http-api=ETH,NET,QBFT",
+              "--host-allowlist=\"*\"",
+              "--rpc-http-cors-origins=\"all\"",
+              "--rpc-http-port=${RPC_PORT}",
+              "--p2p-port=${P2P_PORT}",
+              "--profile=ENTERPRISE"]
+
+    volumes:
+      - ./config:/opt/besu/config
+      - ./data-node:/opt/besu/data
+      - ./script:/opt/besu/script
+    
+    ports:
+      - ${RPC_PORT}:${RPC_PORT}
+      - ${P2P_PORT}:${P2P_PORT}
+
+  join-node:
+    image: hyperledger/besu:latest
+    
+    command: ["--data-path=Node-${NUM_DIR}",
+              "--genesis-file=config/genesis.json",
+              "--bootnodes=\"${ENODE_URL}\"",
+              "--rpc-http-enabled",
+              "--rpc-http-api=ETH,NET,QBFT",
+              "--host-allowlist=\"*\"",
+              "--rpc-http-cors-origins=\"all\"",
+              "--rpc-http-port=${RPC_PORT}",
+              "--p2p-port=${P2P_PORT}",
+              "--profile=ENTERPRISE"]
+
+    volumes:
+      - ./config:/opt/besu/config
+      - ./data-node:/opt/besu/data
+      - ./script:/opt/besu/script
+    
+    ports:
+      - ${RPC_PORT}:${RPC_PORT}
+      - ${P2P_PORT}:${P2P_PORT}
+      
+  start-node:
+    image: hyperledger/besu:latest
+
+    command: ["--data-path=Node-${NUM_DIR}",
+              "--genesis-file=config/genesis.json",
+              "--bootnodes=\"$ENODE_URL}\"",
+              "--rpc-http-enabled",
+              "--rpc-http-api=ETH,NET,QBFT",
+              "--host-allowlist=\"*\"",
+              "--rpc-http-cors-origins=\"all\"",
+              "--rpc-http-port=${RPC_PORT}",
+              "--p2p-port=${P2P_PORT}",
+              "--profile=ENTERPRISE"]
+
+    volumes:
+      - ./config:/opt/besu/config
+      - ./data-node:/opt/besu/data
+      - ./script:/opt/besu/script
+    
+    ports:
+      - ${RPC_PORT}:${RPC_PORT}
+      - ${P2P_PORT}:${P2P_PORT}
