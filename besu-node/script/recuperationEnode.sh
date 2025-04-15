@@ -1,7 +1,7 @@
 IP=$(hostname -I | cut -d ' ' -f 1)
-echo "IP: $IP" > /opt/besu/data/$1/enodeUrl.txt
+echo "IP: $IP" > ./data-node/$1/enodeUrl.txt
 
 while ! docker compose logs | grep -q "Enode URL"; do sleep 1; done
 ENODE=$(docker compose logs | grep "Enode URL" | cut -d '|' -f 5 | cut -d ' ' -f 4)
-echo "$ENODE@$IP:$2" > /opt/besu/data/$1/enodeUrl.txt
+echo "$ENODE@$IP:$2" > ./data-node/$1/enodeUrl.txt
 echo "Enode URL: $ENODE"
