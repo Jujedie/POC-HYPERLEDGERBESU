@@ -1,4 +1,11 @@
-IP=$(hostname -I | cut -d ' ' -f 1)
+if [ "$(uname -s)" = "Darwin" ]; then
+	IP=$(scutil --nwi | grep address | cut -d ':' -f 2)
+elif [ "$(uname -s)" = "Linux" ]; then
+	IP=$(hostname -I | cut -d ' ' -f 1)
+else
+	echo "OS inconnu"
+fi
+
 echo "IP: $IP" > $1/enodeUrl.txt
 
 while ! docker compose logs | grep -q "Enode URL"; do sleep 1; done

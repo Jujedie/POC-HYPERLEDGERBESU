@@ -1,3 +1,7 @@
+volumes:
+  prometheus_data:
+  grafana_data:
+
 services:
   create-qbft:
     image: hyperledger/besu:latest
@@ -10,6 +14,9 @@ services:
               "--rpc-http-cors-origins=\"all\"",
               "--rpc-http-port=${RPC_PORT}",
               "--p2p-port=${P2P_PORT}",
+              "--metrics-enabled=true",
+              "--metrics-port=${METRIC_PORT}",
+              "--metrics-host=0.0.0.0",
               "--profile=ENTERPRISE",
               "--node-private-key-file=/opt/besu/Node-${NUM_DIR}/data/private_key"]
 
@@ -21,6 +28,7 @@ services:
     ports:
       - ${RPC_PORT}:${RPC_PORT}
       - ${P2P_PORT}:${P2P_PORT}
+      - ${METRIC_PORT}:${METRIC_PORT}
   join-bootnode:
     image: hyperledger/besu:latest
     
@@ -32,6 +40,9 @@ services:
               "--rpc-http-cors-origins=\"all\"",
               "--rpc-http-port=${RPC_PORT}",
               "--p2p-port=${P2P_PORT}",
+              "--metrics-enabled=true",
+              "--metrics-port=${METRIC_PORT}",
+              "--metrics-host=0.0.0.0",
               "--profile=ENTERPRISE"]
 
     volumes:
@@ -42,6 +53,7 @@ services:
     ports:
       - ${RPC_PORT}:${RPC_PORT}
       - ${P2P_PORT}:${P2P_PORT}
+      - ${METRIC_PORT}:${METRIC_PORT}
 
   join-node:
     image: hyperledger/besu:latest
@@ -55,6 +67,9 @@ services:
               "--rpc-http-cors-origins=\"all\"",
               "--rpc-http-port=${RPC_PORT}",
               "--p2p-port=${P2P_PORT}",
+              "--metrics-enabled=true",
+              "--metrics-port=${METRIC_PORT}",
+              "--metrics-host=0.0.0.0",
               "--profile=ENTERPRISE"]
 
     volumes:
@@ -65,6 +80,7 @@ services:
     ports:
       - ${RPC_PORT}:${RPC_PORT}
       - ${P2P_PORT}:${P2P_PORT}
+      - ${METRIC_PORT}:${METRIC_PORT}
       
   start-node:
     image: hyperledger/besu:latest
@@ -78,6 +94,9 @@ services:
               "--rpc-http-cors-origins=\"all\"",
               "--rpc-http-port=${RPC_PORT}",
               "--p2p-port=${P2P_PORT}",
+              "--metrics-enabled=true",
+              "--metrics-port=${METRIC_PORT}",
+              "--metrics-host=0.0.0.0",
               "--profile=ENTERPRISE"]
 
     volumes:
@@ -88,3 +107,25 @@ services:
     ports:
       - ${RPC_PORT}:${RPC_PORT}
       - ${P2P_PORT}:${P2P_PORT}
+      - ${METRIC_PORT}:${METRIC_PORT}
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    ports:
+      - ${PROM_PORT}:${PROM_PORT}
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    volumes:
+      - grafana_data:/var/lib/grafana
+    ports:
+      - ${GRAF_PORT}:${GRAF_PORT}
+

@@ -21,6 +21,9 @@ IS_VALID=false
 NUM_DIR="1"
 RPC_PORT=8545
 P2P_PORT=30303
+METRIC_PORT=9545
+GRAF_PORT=3000
+PROM_PORT=9090
 
 # Analyse des arguments
 while [[ $# -gt 0 ]]; do
@@ -78,6 +81,9 @@ echo "NUM_DIR=$NUM_DIR" >> .env
 echo "IS_BOOT=$IS_BOOT" >> .env
 echo "IS_VALID=$IS_VALID" >> .env
 echo "ENODE_URL=$ENODE_URL" >> .env
+echo "METRIC_PORT=$METRIC_PORT" >> .env
+echo "PROM_PORT=$PROM_PORT" >> .env
+echo "GRAF_PORT=$GRAF_PORT" >> .env
 
 echo -e "Fichier de configuration écrit avec succès.\n"
 cat .env
@@ -98,6 +104,10 @@ case $MODE in
         docker compose down -v
         docker compose up -d create-qbft
         docker compose start create-qbft
+		docker compose up -d prometheus
+		docker compose start prometheus
+		docker compose up -d grafana
+		docker compose start grafana
 
         sh ./script/recuperationEnode.sh "./data-node/Node-${NUM_DIR}" "$P2P_PORT"
         ;;
