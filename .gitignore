@@ -1,4 +1,4 @@
 .vscode
 besu-node/config/*
 besu-node/data-node/*
-**/.env
+besu-node/.env
