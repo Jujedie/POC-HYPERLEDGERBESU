@@ -1,3 +1,5 @@
+#!/bin/bash
+
 sudo apt-get update
 
 # Installation de Java 17

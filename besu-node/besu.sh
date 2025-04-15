@@ -104,10 +104,10 @@ case $MODE in
         docker compose down -v
         docker compose up -d create-qbft
         docker compose start create-qbft
-		docker compose up -d prometheus
-		docker compose start prometheus
-		docker compose up -d grafana
-		docker compose start grafana
+		    docker compose up -d prometheus
+	    	docker compose start prometheus
+		    docker compose up -d grafana
+		    docker compose start grafana
 
         sh ./script/recuperationEnode.sh "./data-node/Node-${NUM_DIR}" "$P2P_PORT"
         ;;

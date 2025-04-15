@@ -1,3 +1,5 @@
+#!/bin/bash
+
 if [ "$(uname -s)" = "Darwin" ]; then
 	IP=$(scutil --nwi | grep address | cut -d ':' -f 2)
 elif [ "$(uname -s)" = "Linux" ]; then

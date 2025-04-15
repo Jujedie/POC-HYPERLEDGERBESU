@@ -23,7 +23,6 @@ services:
     volumes:
       - ./config:/opt/besu/config
       - ./data-node:/opt/besu/data
-      - ./script:/opt/besu/script
     
     ports:
       - ${RPC_PORT}:${RPC_PORT}
@@ -48,7 +47,6 @@ services:
     volumes:
       - ./config:/opt/besu/config
       - ./data-node:/opt/besu/data
-      - ./script:/opt/besu/script
     
     ports:
       - ${RPC_PORT}:${RPC_PORT}
@@ -75,7 +73,6 @@ services:
     volumes:
       - ./config:/opt/besu/config
       - ./data-node:/opt/besu/data
-      - ./script:/opt/besu/script
     
     ports:
       - ${RPC_PORT}:${RPC_PORT}
@@ -102,7 +99,6 @@ services:
     volumes:
       - ./config:/opt/besu/config
       - ./data-node:/opt/besu/data
-      - ./script:/opt/besu/script
     
     ports:
       - ${RPC_PORT}:${RPC_PORT}

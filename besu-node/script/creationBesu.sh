@@ -1,3 +1,5 @@
+#!/bin/bash
+
 echo "Création d'une nouvelle blockchain QBFT..."
     
 # Création du fichier de configuration
