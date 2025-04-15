@@ -85,22 +85,24 @@ cat .env
 # Exécution selon le mode choisi
 echo "Exécution en mode: $MODE"
 
+if [ ! -d "./data-node/Node-$NUM_DIR/data" ]; then 
+  mkdir -p "./data-node/Node-$NUM_DIR/data"; 
+fi
+
 case $MODE in
     new)
         echo "Création d'une nouvelle blockchain..."
-        
+
         sh ./script/creationBesu.sh
 
         docker compose down -v
         docker compose up -d create-qbft
         docker compose start create-qbft
+
+        sh ./script/recuperationEnode.sh "./data-node/Node-${numDir}"
         ;;
     join)
         echo "Rejoindre une blockchain existante avec enode: $ENODE_URL"
-
-        if [ ! -d "./data-node/Node-$NUM_DIR/data" ]; then 
-          mkdir -p "./data-node/Node-$NUM_DIR/data"; 
-        fi
 
         if [ "$IS_BOOT" = "true" ]; then
             docker compose up -d join-bootnode
