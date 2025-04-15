@@ -1,3 +1,15 @@
+sudo apt-get update
+
+# Installation de Java 17
+sudo apt install openjdk-17-jdk 
+
+# Installation de besu
+wget https://github.com/hyperledger/besu/releases/download/25.4.0/besu-25.4.0.tar.gz
+sudo tar -xvf besu-25.4.0.tar.gz -C /opt
+sudo mv /opt/besu-25.4.0 /opt/besu
+echo "export PATH=\$PATH:/opt/besu/bin" >> ~/.bashrc
+source ~/.bashrc
+
 # Add Docker's official GPG key:
 sudo apt-get update
 sudo apt-get install ca-certificates curl
@@ -15,4 +27,7 @@ sudo apt-get update
 sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
 sudo usermod -aG docker $USER
-echo "Docker installé, veuillez vous déconnecter et vous reconnecter pour que les modifications prennent effet"
+sudo service docker restart
+docker context use default
+
+echo "Docker installé, veuillez redémarrer votre machine pour que les modifications prennent effet"
