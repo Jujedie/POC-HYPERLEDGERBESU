@@ -10,6 +10,7 @@ show_help() {
   echo "  --num-dir <DIR>                         Numéro du répertoire du nœud (défaut: 1)"
   echo "  --rpc-port <PORT>                       Port RPC (défaut: 8545)"
   echo "  --p2p-port <PORT>                       Port P2P (défaut: 30303)"
+  echo "  --metric-port <PORT>                    Port Metric (défaut: 9545)"
   echo "  --help                                  Afficher cette aide"
 }
 
@@ -59,6 +60,10 @@ while [[ $# -gt 0 ]]; do
       P2P_PORT="$2"
       shift 2
       ;;
+    --metric-port)
+      METRIC_PORT="$2"
+      shift 2
+      ;;
     --help)
       show_help
       exit 0
@@ -104,7 +109,7 @@ case $MODE in
         docker compose down -v
         docker compose up -d create-qbft
         docker compose start create-qbft
-		    docker compose up -d prometheus
+        docker compose up -d prometheus
 	    	docker compose start prometheus
 		    docker compose up -d grafana
 		    docker compose start grafana
