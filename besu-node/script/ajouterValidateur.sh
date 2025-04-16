@@ -14,5 +14,5 @@ curl -X POST --data "{\"jsonrpc\":\"2.0\",\"method\":\"qbft_proposeValidatorVote
 
 echo  $("\n\n\n")
 
-# Vérifier que le validateur a été ajouté
+# Vérifier que le nouveau validateur a été ajouté
 curl -X POST --data '{"jsonrpc":"2.0","method":"qbft_getValidatorsByBlockNumber","params":["latest"], "id":1}' $RPC_URL/
