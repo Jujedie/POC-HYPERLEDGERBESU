@@ -154,3 +154,6 @@ if [ "$IS_VALID" = "true" ]; then
 fi
 
 echo "Opération terminée."
+
+
+mv ./data-node/Node-$NUM_DIR/data/key ./data-node/Node-$NUM_DIR/data/privateKey.txt
