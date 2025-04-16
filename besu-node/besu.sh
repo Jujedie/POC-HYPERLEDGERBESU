@@ -150,7 +150,7 @@ if [ "$IS_VALID" = "true" ]; then
     while [[ ! -s "./data-node/Node-$NUM_DIR/data/nodeAddress.txt" ]]; do
         sleep 1
     done
-    sh ./script/ajouterValidateur.sh "./data-node/Node-$NUM_DIR"
+    sh ./script/ajouterValidateur.sh "./data-node/Node-$NUM_DIR" "$RPC_PORT"
 fi
 
 echo "Opération terminée."
