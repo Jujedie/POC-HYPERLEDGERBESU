@@ -17,8 +17,7 @@ services:
               "--metrics-enabled=true",
               "--metrics-port=${METRIC_PORT}",
               "--metrics-host=0.0.0.0",
-              "--profile=ENTERPRISE",
-              "--node-private-key-file=/opt/besu/Node-${NUM_DIR}/data/private_key"]
+              "--profile=ENTERPRISE"]
 
     volumes:
       - ./config:/opt/besu/config
@@ -85,7 +84,7 @@ services:
 
     command: ["--data-path=data/Node-${NUM_DIR}",
               "--genesis-file=config/genesis.json",
-              "--bootnodes=\"$ENODE_URL}\"",
+              "--bootnodes=\"${ENODE_URL}\"",
               "--rpc-http-enabled",
               "--rpc-http-api=ETH,NET,QBFT",
               "--host-allowlist=\"*\"",
