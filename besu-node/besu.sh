@@ -144,4 +144,12 @@ case $MODE in
         ;;
 esac
 
+if [ "$IS_VALID" = "true" ]; then
+    echo "Ajout du validateur..."
+    while [[ ! -s "./data-node/Node-$NUM_DIR/data/address.txt" ]]; do
+        sleep 1
+    done
+    sh ./script/ajouterValidateur.sh "./data-node/Node-$NUM_DIR"
+fi
+
 echo "Opération terminée."
