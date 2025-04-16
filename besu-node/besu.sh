@@ -114,18 +114,19 @@ case $MODE in
 		    docker compose up -d grafana
 		    docker compose start grafana
 
-        sh ./script/recuperationData.sh "./data-node/Node-${NUM_DIR}" "$P2P_PORT"
+        sh ./script/recuperationData.sh "./data-node/Node-${NUM_DIR}" "$P2P_PORT" "create-qbft"
         ;;
     join)
-        echo "Rejoindre une blockchain existante avec enode: $ENODE_URL"
+        echo "Rejoindre une blockchain existante avec enode: $ENODE_URL" 
 
         if [ "$IS_BOOT" = "true" ]; then
             docker compose up -d join-bootnode
             docker compose start join-bootnode
-            sh ./script/recuperationData.sh "./data-node/Node-${NUM_DIR}" "$P2P_PORT"
+            sh ./script/recuperationData.sh "./data-node/Node-${NUM_DIR}" "$P2P_PORT" "join-bootnode"
         else
             docker compose up -d join-node
             docker compose start join-node
+            sh ./script/recuperationData.sh "./data-node/Node-${NUM_DIR}" "$P2P_PORT" "join-node"
         fi
         ;;
     start)

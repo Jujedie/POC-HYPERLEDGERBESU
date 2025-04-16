@@ -31,8 +31,9 @@ services:
   join-bootnode:
     image: hyperledger/besu:latest
     
-    command: ["--data-path=Node-${NUM_DIR}",
+    command: ["--data-path=data/Node-${NUM_DIR}",
               "--genesis-file=config/genesis.json",
+              "--bootnodes=\"${ENODE_URL}\"",
               "--rpc-http-enabled",
               "--rpc-http-api=ETH,NET,QBFT",
               "--host-allowlist=\"*\"",
@@ -56,7 +57,7 @@ services:
   join-node:
     image: hyperledger/besu:latest
     
-    command: ["--data-path=Node-${NUM_DIR}",
+    command: ["--data-path=data/Node-${NUM_DIR}",
               "--genesis-file=config/genesis.json",
               "--bootnodes=\"${ENODE_URL}\"",
               "--rpc-http-enabled",
@@ -82,7 +83,7 @@ services:
   start-node:
     image: hyperledger/besu:latest
 
-    command: ["--data-path=Node-${NUM_DIR}",
+    command: ["--data-path=data/Node-${NUM_DIR}",
               "--genesis-file=config/genesis.json",
               "--bootnodes=\"$ENODE_URL}\"",
               "--rpc-http-enabled",
