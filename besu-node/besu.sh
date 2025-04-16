@@ -17,7 +17,7 @@ show_help() {
 # Déclaration des variables
 MODE="new"
 ENODE_URL=" "
-IS_BOOT=false
+IS_BOOT=true
 IS_VALID=false
 NUM_DIR="1"
 RPC_PORT=8545
@@ -34,7 +34,7 @@ while [[ $# -gt 0 ]]; do
       MODE="new"
       IS_BOOT=true
       IS_VALID="$2"
-      shift
+      shift 2
       ;;
     --join)
       MODE="join"
@@ -147,7 +147,7 @@ esac
 
 if [ "$IS_VALID" = "true" ]; then
     echo "Ajout du validateur..."
-    while [[ ! -s "./data-node/Node-$NUM_DIR/data/address.txt" ]]; do
+    while [[ ! -s "./data-node/Node-$NUM_DIR/data/nodeAddress.txt" ]]; do
         sleep 1
     done
     sh ./script/ajouterValidateur.sh "./data-node/Node-$NUM_DIR"

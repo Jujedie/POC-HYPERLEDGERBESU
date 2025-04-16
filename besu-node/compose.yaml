@@ -18,7 +18,7 @@ services:
               "--metrics-port=${METRIC_PORT}",
               "--metrics-host=0.0.0.0",
               "--profile=ENTERPRISE",
-              "--node-private-key-file=/opt/besu/Node-${NUM_DIR}/data/private_key"]
+              "--node-private-key-file=/opt/besu/data/Node-${NUM_DIR}/data/private_key"]
 
     volumes:
       - ./config:/opt/besu/config
@@ -44,7 +44,7 @@ services:
               "--metrics-port=${METRIC_PORT}",
               "--metrics-host=0.0.0.0",
               "--profile=ENTERPRISE",
-              "--node-private-key-file=/opt/besu/Node-${NUM_DIR}/data/private_key"]
+              "--node-private-key-file=/opt/besu/data/Node-${NUM_DIR}/data/private_key"]
 
     volumes:
       - ./config:/opt/besu/config
@@ -71,7 +71,7 @@ services:
               "--metrics-port=${METRIC_PORT}",
               "--metrics-host=0.0.0.0",
               "--profile=ENTERPRISE",
-              "--node-private-key-file=/opt/besu/Node-${NUM_DIR}/data/private_key"]
+              "--node-private-key-file=/opt/besu/data/Node-${NUM_DIR}/data/private_key"]
 
     volumes:
       - ./config:/opt/besu/config

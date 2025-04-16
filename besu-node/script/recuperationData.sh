@@ -1,5 +1,7 @@
 #!/bin/bash
 
+mv $1/data/key $1/data/privateKey.txt
+
 if [ "$(uname -s)" = "Darwin" ]; then
 	IP=$(scutil --nwi | grep address | cut -d ':' -f 2 | cut -d ' ' -f 2)
 elif [ "$(uname -s)" = "Linux" ]; then
