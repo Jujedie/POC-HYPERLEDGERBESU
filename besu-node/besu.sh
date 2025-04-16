@@ -4,7 +4,7 @@
 show_help() {
   echo "Usage: $0 [OPTIONS]"
   echo "Options:"
-  echo "  --new                                   Créer une nouvelle blockchain (par défaut)"
+  echo "  --new  <IS_VALID>                       Créer une nouvelle blockchain (par défaut)"
   echo "  --join <ENODE_URL> <IS_BOOT> <IS_VALID> Rejoindre une blockchain existante"
   echo "  --start <IS_BOOT> <IS_VALID>            Démarrer le nœud en mode bootstrap (par défaut: true)"
   echo "  --num-dir <DIR>                         Numéro du répertoire du nœud (défaut: 1)"
@@ -17,7 +17,7 @@ show_help() {
 # Déclaration des variables
 MODE="new"
 ENODE_URL=" "
-IS_BOOT=false
+IS_BOOT=true
 IS_VALID=false
 NUM_DIR="1"
 RPC_PORT=8545
@@ -33,7 +33,8 @@ while [[ $# -gt 0 ]]; do
     --new)
       MODE="new"
       IS_BOOT=true
-      shift
+      IS_VALID="$2"
+      shift 2
       ;;
     --join)
       MODE="join"
@@ -144,4 +145,15 @@ case $MODE in
         ;;
 esac
 
+if [ "$IS_VALID" = "true" ]; then
+    echo "Ajout du validateur..."
+    while [[ ! -s "./data-node/Node-$NUM_DIR/data/nodeAddress.txt" ]]; do
+        sleep 1
+    done
+    sh ./script/ajouterValidateur.sh "./data-node/Node-$NUM_DIR"
+fi
+
 echo "Opération terminée."
+
+
+mv ./data-node/Node-$NUM_DIR/data/key ./data-node/Node-$NUM_DIR/data/privateKey.txt
