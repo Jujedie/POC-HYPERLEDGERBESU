@@ -4,7 +4,7 @@
 show_help() {
   echo "Usage: $0 [OPTIONS]"
   echo "Options:"
-  echo "  --new                                   Créer une nouvelle blockchain (par défaut)"
+  echo "  --new  <IS_VALID>                       Créer une nouvelle blockchain (par défaut)"
   echo "  --join <ENODE_URL> <IS_BOOT> <IS_VALID> Rejoindre une blockchain existante"
   echo "  --start <IS_BOOT> <IS_VALID>            Démarrer le nœud en mode bootstrap (par défaut: true)"
   echo "  --num-dir <DIR>                         Numéro du répertoire du nœud (défaut: 1)"
@@ -33,6 +33,7 @@ while [[ $# -gt 0 ]]; do
     --new)
       MODE="new"
       IS_BOOT=true
+      IS_VALID="$2"
       shift
       ;;
     --join)
