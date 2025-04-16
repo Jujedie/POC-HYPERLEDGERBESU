@@ -28,6 +28,10 @@ services:
       - ${RPC_PORT}:${RPC_PORT}
       - ${P2P_PORT}:${P2P_PORT}
       - ${METRIC_PORT}:${METRIC_PORT}
+    network_mode: "host" 
+    environment:
+      - BESU_P2P_HOST=${IP_EXTERNE}
+
   join-bootnode:
     image: hyperledger/besu:latest
     
@@ -54,6 +58,9 @@ services:
       - ${RPC_PORT}:${RPC_PORT}
       - ${P2P_PORT}:${P2P_PORT}
       - ${METRIC_PORT}:${METRIC_PORT}
+    network_mode: "host" 
+    environment:
+      - BESU_P2P_HOST=${IP_EXTERNE}
 
   join-node:
     image: hyperledger/besu:latest
@@ -81,6 +88,9 @@ services:
       - ${RPC_PORT}:${RPC_PORT}
       - ${P2P_PORT}:${P2P_PORT}
       - ${METRIC_PORT}:${METRIC_PORT}
+    network_mode: "host" 
+    environment:
+      - BESU_P2P_HOST=${IP_EXTERNE}
       
   start-node:
     image: hyperledger/besu:latest
@@ -107,6 +117,9 @@ services:
       - ${RPC_PORT}:${RPC_PORT}
       - ${P2P_PORT}:${P2P_PORT}
       - ${METRIC_PORT}:${METRIC_PORT}
+    network_mode: "host" 
+    environment:
+      - BESU_P2P_HOST=${IP_EXTERNE}
 
   prometheus:
     image: prom/prometheus:latest

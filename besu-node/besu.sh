@@ -91,6 +91,20 @@ echo "METRIC_PORT=$METRIC_PORT" >> .env
 echo "PROM_PORT=$PROM_PORT" >> .env
 echo "GRAF_PORT=$GRAF_PORT" >> .env
 
+# Détection de l'IP externe
+if [ -z "$IP_EXTERNE" ]; then
+  if [ "$(uname -s)" = "Darwin" ]; then
+    IP_EXTERNE=$(scutil --nwi | grep address | cut -d ':' -f 2 | cut -d ' ' -f 2)
+  elif [ "$(uname -s)" = "Linux" ]; then
+    # Utiliser curl pour obtenir l'IP externe
+    IP_EXTERNE=$(curl -s ifconfig.me || hostname -I | cut -d ' ' -f 1)
+  fi
+  echo "IP externe détectée: $IP_EXTERNE"
+fi
+
+# Ajouter l'IP externe à .env
+echo "IP_EXTERNE=$IP_EXTERNE" >> .env
+
 echo -e "Fichier de configuration écrit avec succès.\n"
 cat .env
 
@@ -150,7 +164,7 @@ if [ "$IS_VALID" = "true" ]; then
     while [[ ! -s "./data-node/Node-$NUM_DIR/data/nodeAddress.txt" ]]; do
         sleep 1
     done
-    sh ./script/ajouterValidateur.sh "./data-node/Node-$NUM_DIR"
+    sh ./script/ajouterValidateur.sh "./data-node/Node-$NUM_DIR" "$RPC_PORT"
 fi
 
 echo "Opération terminée."
