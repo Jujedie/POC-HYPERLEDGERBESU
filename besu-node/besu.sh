@@ -6,7 +6,7 @@ show_help() {
   echo "Options:"
   echo "  --new  <IS_VALID>                       Créer une nouvelle blockchain (par défaut)"
   echo "  --join <ENODE_URL> <IS_BOOT> <IS_VALID> Rejoindre une blockchain existante"
-  echo "  --start <IS_BOOT> <IS_VALID>            Démarrer le nœud en mode bootstrap (par défaut: true)"
+  echo "  --start <IS_BOOT>                       Démarrer le nœud en mode bootstrap (par défaut: true)"
   echo "  --num-dir <DIR>                         Numéro du répertoire du nœud (défaut: 1)"
   echo "  --rpc-port <PORT>                       Port RPC (défaut: 8545)"
   echo "  --p2p-port <PORT>                       Port P2P (défaut: 30303)"
