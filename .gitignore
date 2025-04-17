@@ -2,3 +2,4 @@
 besu-node/config/*
 besu-node/data-node/*
 besu-node/.env
+.vscode/settings.json
