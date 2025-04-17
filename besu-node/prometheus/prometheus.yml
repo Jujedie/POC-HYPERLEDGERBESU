@@ -4,4 +4,4 @@ global:
 scrape_configs:
   - job_name: 'besu'
     static_configs:
-      - targets: ['localhost:9545']
+      - targets: ['localhost:9545']  # Use the external/local IP

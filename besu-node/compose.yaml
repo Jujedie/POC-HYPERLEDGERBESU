@@ -31,7 +31,7 @@ services:
       - ${METRIC_PORT}:${METRIC_PORT}
     network_mode: "host" 
     environment:
-      - BESU_P2P_HOST=${IP_EXTERNE}
+      - BESU_P2P_HOST=${IP_EXTERNE}  # Use the external/local IP
 
   join-bootnode:
     image: hyperledger/besu:latest
@@ -62,7 +62,7 @@ services:
       - ${METRIC_PORT}:${METRIC_PORT}
     network_mode: "host" 
     environment:
-      - BESU_P2P_HOST=${IP_EXTERNE}
+      - BESU_P2P_HOST=${IP_EXTERNE}  # Use the external/local IP
 
   join-node:
     image: hyperledger/besu:latest
@@ -93,7 +93,7 @@ services:
       - ${METRIC_PORT}:${METRIC_PORT}
     network_mode: "host" 
     environment:
-      - BESU_P2P_HOST=${IP_EXTERNE}
+      - BESU_P2P_HOST=${IP_EXTERNE}  # Use the external/local IP
       
   start-node:
     image: hyperledger/besu:latest
@@ -123,7 +123,7 @@ services:
       - ${METRIC_PORT}:${METRIC_PORT}
     network_mode: "host" 
     environment:
-      - BESU_P2P_HOST=${IP_EXTERNE}
+      - BESU_P2P_HOST=${IP_EXTERNE}  # Use the external/local IP
 
   prometheus:
     image: prom/prometheus:latest
