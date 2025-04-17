@@ -143,6 +143,9 @@ services:
       - GF_SECURITY_ADMIN_USER=admin
       - GF_SECURITY_ADMIN_PASSWORD=admin
     volumes:
+      - ./grafana/dashboards:/etc/grafana/provisioning/dashboards/dashboards
+      - ./grafana/dashboards.yml:/etc/grafana/provisioning/dashboards/dashboards.yml
+      - ./grafana/datasources.yml:/etc/grafana/provisioning/datasources/datasources.yml
       - grafana_data:/var/lib/grafana
     ports:
       - ${GRAF_PORT}:${GRAF_PORT}
