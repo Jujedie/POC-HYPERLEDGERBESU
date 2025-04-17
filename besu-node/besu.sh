@@ -91,16 +91,7 @@ echo "METRIC_PORT=$METRIC_PORT" >> .env
 echo "PROM_PORT=$PROM_PORT" >> .env
 echo "GRAF_PORT=$GRAF_PORT" >> .env
 
-# Détection de l'IP externe
-if [ -z "$IP_EXTERNE" ]; then
-  if [ "$(uname -s)" = "Darwin" ]; then
-    IP_EXTERNE=$(scutil --nwi | grep address | cut -d ':' -f 2 | cut -d ' ' -f 2)
-  elif [ "$(uname -s)" = "Linux" ]; then
-    # Utiliser curl pour obtenir l'IP externe
-    IP_EXTERNE=$(curl -s ifconfig.me || hostname -I | cut -d ' ' -f 1)
-  fi
-  echo "IP externe détectée: $IP_EXTERNE"
-fi
+IP_EXTERNE=$(hostname -I | awk '{print $1}')  
 
 # Ajouter l'IP externe à .env
 echo "IP_EXTERNE=$IP_EXTERNE" >> .env
