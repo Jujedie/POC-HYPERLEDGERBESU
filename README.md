@@ -81,6 +81,16 @@ docker compose down -v
 
 ## Accéder aux métriques de la blockchain
 
+Pour accéder aux métriques de la blockchain, vous devez d'abord avoir démarré une blockchain.
+
+Ensuite rendez vous à l'adresse suivante :
+http://localhost:3000
+
+le mot de passe et l'identifiant peuvent être changé dans compose.yaml.
+
+Le mot de passe et l'identifiant par défaut est : admin
+
+Allez dans la catégorie ... (à continuer)
 <!--
 Le nombre de nœuds au minmum 4
 ```bash
