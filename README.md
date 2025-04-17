@@ -90,7 +90,9 @@ le mot de passe et l'identifiant peuvent être changé dans compose.yaml.
 
 Le mot de passe et l'identifiant par défaut est : admin
 
-Allez dans la catégorie ... (à continuer)
+Dans menu cliquer sur <kbd>Connections > Data sources > Add new data source > Prometheus</kbd>. Rentrer http://prometheus:9090 dans la partie Connection Prometheus server URL. Descendez la page et appuyer sur le bouton Save & test.
+
+Il faut alors vous rentre dans <kbd>Dashboards > New > Import dashboard</kbd> (Cliquer sur discard si un popup apparaît). Importer l'id 16455 en l'entrant dans la zone de texte prévu à cet effet et cliquer ensuite sur load. Il faut maintenant sélectionner notre data source dans la partie prometheus et importer.
 <!--
 Le nombre de nœuds au minmum 4
 ```bash
