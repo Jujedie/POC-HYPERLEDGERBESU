@@ -11,7 +11,7 @@ PUBLIC_KEY=$(echo $ENODE | sed 's/enode:\/\///')
 echo "0x$PUBLIC_KEY" > $1/data/publicKey.txt
 
 # Try to find node address in logs
-NODE_ADDRESS=$(docker logs $2 | grep -E "Node address|Ethereum address" | grep -oE "0x[0-9a-fA-F]{40}" | head -1)
+NODE_ADDRESS=$(docker logs $2 | grep -E "Node address" | grep -oE "0x[0-9a-fA-F]{40}" | head -1)
 
 # Save node address
 if [ -n "$NODE_ADDRESS" ]; then
