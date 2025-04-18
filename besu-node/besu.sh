@@ -4,8 +4,8 @@
 show_help() {
   echo "Usage: $0 [OPTIONS]"
   echo "Options:"
-  echo "  --new  <IS_VALID>                       Créer une nouvelle blockchain (par défaut)"
-  echo "  --join <ENODE_URL> <IS_BOOT> <IS_VALID> Rejoindre une blockchain existante"
+  echo "  --new                                   Créer une nouvelle blockchain (par défaut)"
+  echo "  --join <ENODE_URL> <IS_BOOT>            Rejoindre une blockchain existante"
   echo "  --start <IS_BOOT>                       Démarrer le nœud en mode bootstrap (par défaut: true)"
   echo "  --num-dir <DIR>                         Numéro du répertoire du nœud (défaut: 1)"
   echo "  --rpc-port <PORT>                       Port RPC (défaut: 8545)"
@@ -17,8 +17,6 @@ show_help() {
 # Déclaration des variables
 MODE="new"
 ENODE_URL=" "
-IS_BOOT=true
-IS_VALID=false
 NUM_DIR="1"
 RPC_PORT=8545
 P2P_PORT=30303
@@ -32,21 +30,16 @@ while [[ $# -gt 0 ]]; do
   case $key in
     --new)
       MODE="new"
-      IS_BOOT=true
-      IS_VALID="$2"
-      shift 2
+      shift 1
       ;;
     --join)
       MODE="join"
       ENODE_URL="$2"
-      IS_BOOT="$3"
-      IS_VALID="$4"
-      shift 4
+      shift 2
       ;;
     --start)
       MODE="start"
-      IS_BOOT="$2"
-      shift 2
+      shift 1
       ;;
     --num-dir)
       NUM_DIR="$2"
@@ -83,8 +76,6 @@ rm .env
 echo "RPC_PORT=$RPC_PORT" > .env
 echo "P2P_PORT=$P2P_PORT" >> .env
 echo "NUM_DIR=$NUM_DIR" >> .env
-echo "IS_BOOT=$IS_BOOT" >> .env
-echo "IS_VALID=$IS_VALID" >> .env
 echo "ENODE_URL=$ENODE_URL" >> .env
 echo "METRIC_PORT=$METRIC_PORT" >> .env
 echo "PROM_PORT=$PROM_PORT" >> .env
@@ -128,20 +119,15 @@ case $MODE in
     join)
         echo "Rejoindre une blockchain existante avec enode: $ENODE_URL" 
 
-        if [ "$IS_BOOT" = "true" ]; then
-            docker compose up -d join-bootnode
-            docker compose start join-bootnode
-            sh ./script/recuperationData.sh "./data-node/Node-$NUM_DIR" "join-bootnode-$NUM_DIR"
-        else
-            docker compose up -d join-node
-            docker compose start join-node
-            sh ./script/recuperationData.sh "./data-node/Node-$NUM_DIR" "join-node-$NUM_DIR"
-        fi
+        
+        docker compose up -d --no-recreate join-node
+        docker compose start join-node
+        sh ./script/recuperationData.sh "./data-node/Node-$NUM_DIR" "join-node-$NUM_DIR"
         ;;
     start)
         echo "Démarrage du nœud existant..."
 
-        docker compose up -d start-node
+        docker compose up -d --no-recreate start-node
         docker compose start start-node
         ;;
     *)
@@ -153,15 +139,9 @@ case $MODE in
         ;;
 esac
 
-if [ "$IS_VALID" = "true" ]; then
-    echo "Ajout du validateur..."
-    while [[ ! -s "./data-node/Node-$NUM_DIR/data/nodeAddress.txt" ]]; do
-        sleep 1
-    done
-    sh ./script/ajouterValidateur.sh "./data-node/Node-$NUM_DIR" "$RPC_PORT"
-fi
-
 echo "Opération terminée."
+
+cp ./data-node/Node-$NUM_DIR/key ./data-node/Node-$NUM_DIR/data/privateKey.txt
 
 docker compose up -d prometheus
 docker compose start prometheus
