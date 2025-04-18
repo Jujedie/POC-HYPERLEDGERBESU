@@ -33,7 +33,7 @@ sh besu.sh --help
 Pour initialiser une blockchain, exécutez la commande suivante :
 
 ```bash
-sh besu --new <EST_VALIDATEUR>
+sh besu --new
 ```
 
 Lors de la création d'une blockchain le noeud initial sera un bootnode (nœud de démarrage).
@@ -41,7 +41,7 @@ Lors de la création d'une blockchain le noeud initial sera un bootnode (nœud d
 Additionnellement, vous pouvez spécifier le port rpc, p2p. 
 
 ```bash
-sh besu --new <EST_VALIDATEUR> --rpc-port <PORT> --p2p-port <PORT>
+sh besu --new --rpc-port <PORT> --p2p-port <PORT>
 ```
 
 ### Joindre une blockchain existante
@@ -49,7 +49,7 @@ sh besu --new <EST_VALIDATEUR> --rpc-port <PORT> --p2p-port <PORT>
 Pour rejoindre une blockchain existante, exécutez la commande suivante :
 
 ```bash
-sh besu --join <ENODE_URL_BOOTNODE> <EST_BOOTNODE> <EST_VALIDATEUR>
+sh besu --join <ENODE_URL_BOOTNODE>
 ```
 
 Il est conseillé de spécifier un enode d'un bootnode, l'enode peut être retrouver dans le répertoire ./data-node/Node-[NUMERO]/data/enodeUrl.txt.
@@ -57,7 +57,7 @@ Il est conseillé de spécifier un enode d'un bootnode, l'enode peut être retro
 Il est impératif de spécifier le port rpc, p2p et metric si vous souhaitez éxécuter plusieurs noeuds sur une même machine, pour cela exécutez la commande suivante :
 
 ```bash
-sh besu --join <ENODE_URL_BOOTNODE> <EST_BOOTNODE> <EST_VALIDATEUR> --rpc-port <PORT> --p2p-port <PORT> --metric-port <PORT> --num-dir <NUMERO>
+sh besu --join <ENODE_URL_BOOTNODE> --rpc-port <PORT> --p2p-port <PORT> --metric-port <PORT> --num-dir <NUMERO>
 ```
 
 ### Démarrer un nœud
@@ -65,7 +65,7 @@ sh besu --join <ENODE_URL_BOOTNODE> <EST_BOOTNODE> <EST_VALIDATEUR> --rpc-port <
 Pour démarrer un noeud assurez vous d'avoir un noeud préalablement créé, puis exécutez la commande suivante :
 
 ```bash
-sh besu --start <EST_BOOTNODE> --num-dir <NUMERO>
+sh besu --start --num-dir <NUMERO>
 ```
 
 Le numéro de répertoire est nécessaire si le noeud a démarré est dans un répertoire autre que ./data-node/Node-1
