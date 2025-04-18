@@ -91,7 +91,14 @@ echo "METRIC_PORT=$METRIC_PORT" >> .env
 echo "PROM_PORT=$PROM_PORT" >> .env
 echo "GRAF_PORT=$GRAF_PORT" >> .env
 
-IP_EXTERNE=$(hostname -I | awk '{print $1}')  
+if [[ "$(uname -s)" = "Darwin" ]]; then
+	IP_EXTERNE=$(scutil --nwi | grep address | cut -d ':' -f 2 | cut -d ' ' -f 2)	
+elif [[ "$(uname -s)" = "Linux" ]]; then
+	IP_EXTERNE=$(hostname -i | awk '{print $1}')  
+else
+	echo "Système inconnu"
+	exit 1
+fi
 
 # Ajouter l'IP externe à .env
 echo "IP_EXTERNE=$IP_EXTERNE" >> .env
