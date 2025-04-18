@@ -127,7 +127,7 @@ case $MODE in
 		    docker compose up -d grafana
 		    docker compose start grafana
 
-        sh ./script/recuperationData.sh "./data-node/Node-$NUM_DIR" "$P2P_PORT" "create-qbft-$NUM_DIR"
+        sh ./script/recuperationData.sh "./data-node/Node-$NUM_DIR" "create-qbft-$NUM_DIR"
         ;;
     join)
         echo "Rejoindre une blockchain existante avec enode: $ENODE_URL" 
