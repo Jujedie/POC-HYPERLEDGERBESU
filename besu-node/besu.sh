@@ -5,8 +5,8 @@ show_help() {
   echo "Usage: $0 [OPTIONS]"
   echo "Options:"
   echo "  --new                                   Créer une nouvelle blockchain (par défaut)"
-  echo "  --join <ENODE_URL> <IS_BOOT>            Rejoindre une blockchain existante"
-  echo "  --start <IS_BOOT>                       Démarrer le nœud en mode bootstrap (par défaut: true)"
+  echo "  --join <ENODE_URL>                      Rejoindre une blockchain existante"
+  echo "  --start <ENODE_URL>                     Démarrer le nœud en mode bootstrap (par défaut: true)"
   echo "  --num-dir <DIR>                         Numéro du répertoire du nœud (défaut: 1)"
   echo "  --rpc-port <PORT>                       Port RPC (défaut: 8545)"
   echo "  --p2p-port <PORT>                       Port P2P (défaut: 30303)"
@@ -39,7 +39,8 @@ while [[ $# -gt 0 ]]; do
       ;;
     --start)
       MODE="start"
-      shift 1
+      ENODE_URL="$2"
+      shift 2
       ;;
     --num-dir)
       NUM_DIR="$2"
@@ -143,7 +144,14 @@ echo "Opération terminée."
 
 cp ./data-node/Node-$NUM_DIR/key ./data-node/Node-$NUM_DIR/data/privateKey.txt
 
-docker compose up -d prometheus
-docker compose start prometheus
-docker compose up -d grafana
-docker compose start grafana
+if ! docker compose ps -a | grep -q prometheus; then
+  echo "Creation et démarrage de Prometheus..."
+  docker compose up -d prometheus
+  docker compose start prometheus
+fi
+
+if ! docker compose ps -a | grep -q grafana; then
+  echo "Creation et démarrage de Grafana..."
+  docker compose up -d grafana
+  docker compose start grafana
+fi
