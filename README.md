@@ -33,7 +33,7 @@ sh besu.sh --help
 Pour initialiser une blockchain, exécutez la commande suivante :
 
 ```bash
-sh besu --new <EST_VALIDATEUR>
+sh besu --new
 ```
 
 Lors de la création d'une blockchain le noeud initial sera un bootnode (nœud de démarrage).
@@ -41,7 +41,7 @@ Lors de la création d'une blockchain le noeud initial sera un bootnode (nœud d
 Additionnellement, vous pouvez spécifier le port rpc, p2p. 
 
 ```bash
-sh besu --new <EST_VALIDATEUR> --rpc-port <PORT> --p2p-port <PORT>
+sh besu --new --rpc-port <PORT> --p2p-port <PORT>
 ```
 
 ### Joindre une blockchain existante
@@ -49,7 +49,7 @@ sh besu --new <EST_VALIDATEUR> --rpc-port <PORT> --p2p-port <PORT>
 Pour rejoindre une blockchain existante, exécutez la commande suivante :
 
 ```bash
-sh besu --join <ENODE_URL_BOOTNODE> <EST_BOOTNODE> <EST_VALIDATEUR>
+sh besu --join <ENODE_URL_BOOTNODE>
 ```
 
 Il est conseillé de spécifier un enode d'un bootnode, l'enode peut être retrouver dans le répertoire ./data-node/Node-[NUMERO]/data/enodeUrl.txt.
@@ -57,7 +57,7 @@ Il est conseillé de spécifier un enode d'un bootnode, l'enode peut être retro
 Il est impératif de spécifier le port rpc, p2p et metric si vous souhaitez éxécuter plusieurs noeuds sur une même machine, pour cela exécutez la commande suivante :
 
 ```bash
-sh besu --join <ENODE_URL_BOOTNODE> <EST_BOOTNODE> <EST_VALIDATEUR> --rpc-port <PORT> --p2p-port <PORT> --metric-port <PORT> --num-dir <NUMERO>
+sh besu --join <ENODE_URL_BOOTNODE> --rpc-port <PORT> --p2p-port <PORT> --metric-port <PORT> --num-dir <NUMERO>
 ```
 
 ### Démarrer un nœud
@@ -65,7 +65,7 @@ sh besu --join <ENODE_URL_BOOTNODE> <EST_BOOTNODE> <EST_VALIDATEUR> --rpc-port <
 Pour démarrer un noeud assurez vous d'avoir un noeud préalablement créé, puis exécutez la commande suivante :
 
 ```bash
-sh besu --start <EST_BOOTNODE> --num-dir <NUMERO>
+sh besu --start --num-dir <NUMERO>
 ```
 
 Le numéro de répertoire est nécessaire si le noeud a démarré est dans un répertoire autre que ./data-node/Node-1
@@ -90,7 +90,7 @@ le mot de passe et l'identifiant peuvent être changé dans compose.yaml.
 
 Le mot de passe et l'identifiant par défaut est : admin
 
-Dans menu cliquer sur <kbd>Connections > Data sources > Add new data source > Prometheus</kbd>. Rentrer http://prometheus:9090 dans la partie Connection Prometheus server URL. Descendez la page et appuyer sur le bouton Save & test.
+Dans menu cliquer sur <kbd>Connections > Data sources > Add new data source > Prometheus</kbd>. Rentrer http://localhost:9090 dans la partie Connection Prometheus server URL. Descendez la page et appuyer sur le bouton Save & test.
 
 Il faut alors vous rentre dans <kbd>Dashboards > New > Import dashboard</kbd> (Cliquer sur discard si un popup apparaît). Importer l'id 16455 en l'entrant dans la zone de texte prévu à cet effet et cliquer ensuite sur load. Il faut maintenant sélectionner notre data source dans la partie prometheus et importer.
 
@@ -113,9 +113,3 @@ hostname() {
 }
 EOF
 ```
-<!--
-Le nombre de nœuds au minmum 4
-```bash
-sh create.sh [nombre de nœuds]
-``` 
--->

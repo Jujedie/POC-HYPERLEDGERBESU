@@ -41,6 +41,12 @@ besu operator generate-blockchain-config \
 # déplacement du fichier genesis
 mv networkFiles/genesis.json ./config/
 mv qbftConfigFile.json ./config/
+# Create destination directory if needed
+mkdir -p ./data-node/Node-1
+
+# Find and move the key file
+KEY_FILE=$(find networkFiles -name "key" -type f)
+mv "$KEY_FILE" ./data-node/Node-1/
   
 rm -fr networkFiles
 

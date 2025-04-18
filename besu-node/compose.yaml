@@ -9,100 +9,7 @@ services:
     command: ["--data-path=data/Node-${NUM_DIR}",
               "--genesis-file=config/genesis.json",
               "--rpc-http-enabled",
-              "--rpc-http-api=ETH,NET,QBFT",
-              "--host-allowlist=\"*\"",
-              "--rpc-http-cors-origins=\"all\"",
-              "--rpc-http-port=${RPC_PORT}",
-              "--rpc-http-host=0.0.0.0",
-              "--p2p-port=${P2P_PORT}",
-              "--metrics-enabled=true",
-              "--metrics-port=${METRIC_PORT}",
-              "--metrics-host=0.0.0.0",
-              "--profile=ENTERPRISE",
-              "--node-private-key-file=/opt/besu/data/Node-${NUM_DIR}/data/private_key"]
-
-    volumes:
-      - ./config:/opt/besu/config
-      - ./data-node:/opt/besu/data
-    
-    ports:
-      - ${RPC_PORT}:${RPC_PORT}
-      - ${P2P_PORT}:${P2P_PORT}
-      - ${METRIC_PORT}:${METRIC_PORT}
-    network_mode: "host" 
-    environment:
-      - BESU_P2P_HOST=${IP_EXTERNE}  # Use the external/local IP
-
-  join-bootnode:
-    image: hyperledger/besu:latest
-    container_name: join-bootnode-${NUM_DIR}
-    command: ["--data-path=data/Node-${NUM_DIR}",
-              "--genesis-file=config/genesis.json",
-              "--bootnodes=\"${ENODE_URL}\"",
-              "--rpc-http-enabled",
-              "--rpc-http-api=ETH,NET,QBFT",
-              "--host-allowlist=\"*\"",
-              "--rpc-http-cors-origins=\"all\"",
-              "--rpc-http-port=${RPC_PORT}",
-              "--rpc-http-host=0.0.0.0",
-              "--p2p-port=${P2P_PORT}",
-              "--metrics-enabled=true",
-              "--metrics-port=${METRIC_PORT}",
-              "--metrics-host=0.0.0.0",
-              "--profile=ENTERPRISE",
-              "--node-private-key-file=/opt/besu/data/Node-${NUM_DIR}/data/private_key"]
-
-    volumes:
-      - ./config:/opt/besu/config
-      - ./data-node:/opt/besu/data
-    
-    ports:
-      - ${RPC_PORT}:${RPC_PORT}
-      - ${P2P_PORT}:${P2P_PORT}
-      - ${METRIC_PORT}:${METRIC_PORT}
-    network_mode: "host" 
-    environment:
-      - BESU_P2P_HOST=${IP_EXTERNE}  # Use the external/local IP
-
-  join-node:
-    image: hyperledger/besu:latest
-    container_name: join-node-${NUM_DIR}
-    command: ["--data-path=data/Node-${NUM_DIR}",
-              "--genesis-file=config/genesis.json",
-              "--bootnodes=\"${ENODE_URL}\"",
-              "--rpc-http-enabled",
-              "--rpc-http-api=ETH,NET,QBFT",
-              "--host-allowlist=\"*\"",
-              "--rpc-http-cors-origins=\"all\"",
-              "--rpc-http-port=${RPC_PORT}",
-              "--rpc-http-host=0.0.0.0",
-              "--p2p-port=${P2P_PORT}",
-              "--metrics-enabled=true",
-              "--metrics-port=${METRIC_PORT}",
-              "--metrics-host=0.0.0.0",
-              "--profile=ENTERPRISE",
-              "--node-private-key-file=/opt/besu/data/Node-${NUM_DIR}/data/private_key"]
-
-    volumes:
-      - ./config:/opt/besu/config
-      - ./data-node:/opt/besu/data
-    
-    ports:
-      - ${RPC_PORT}:${RPC_PORT}
-      - ${P2P_PORT}:${P2P_PORT}
-      - ${METRIC_PORT}:${METRIC_PORT}
-    network_mode: "host" 
-    environment:
-      - BESU_P2P_HOST=${IP_EXTERNE}  # Use the external/local IP
-      
-  start-node:
-    image: hyperledger/besu:latest
-    container_name: start-node-${NUM_DIR}
-    command: ["--data-path=data/Node-${NUM_DIR}",
-              "--genesis-file=config/genesis.json",
-              "--bootnodes=\"${ENODE_URL}\"",
-              "--rpc-http-enabled",
-              "--rpc-http-api=ETH,NET,QBFT",
+              "--rpc-http-api=ETH,NET,QBFT,ADMIN",
               "--host-allowlist=\"*\"",
               "--rpc-http-cors-origins=\"all\"",
               "--rpc-http-port=${RPC_PORT}",
@@ -123,7 +30,67 @@ services:
       - ${METRIC_PORT}:${METRIC_PORT}
     network_mode: "host" 
     environment:
-      - BESU_P2P_HOST=${IP_EXTERNE}  # Use the external/local IP
+      - BESU_P2P_HOST=${IP_EXTERNE}   
+
+  join-node:
+    image: hyperledger/besu:latest
+    container_name: join-node-${NUM_DIR}
+    command: ["--data-path=data/Node-${NUM_DIR}",
+              "--genesis-file=config/genesis.json",
+              "--bootnodes=\"${ENODE_URL}\"",
+              "--rpc-http-enabled",
+              "--rpc-http-api=ETH,NET,QBFT,ADMIN",
+              "--host-allowlist=\"*\"",
+              "--rpc-http-cors-origins=\"all\"",
+              "--rpc-http-port=${RPC_PORT}",
+              "--rpc-http-host=0.0.0.0",
+              "--p2p-port=${P2P_PORT}",
+              "--metrics-enabled=true",
+              "--metrics-port=${METRIC_PORT}",
+              "--metrics-host=0.0.0.0",
+              "--profile=ENTERPRISE"]
+
+    volumes:
+      - ./config:/opt/besu/config
+      - ./data-node:/opt/besu/data
+    
+    ports:
+      - ${RPC_PORT}:${RPC_PORT}
+      - ${P2P_PORT}:${P2P_PORT}
+      - ${METRIC_PORT}:${METRIC_PORT}
+    network_mode: "host" 
+    environment:
+      - BESU_P2P_HOST=${IP_EXTERNE}
+      
+  start-node:
+    image: hyperledger/besu:latest
+    container_name: start-node-${NUM_DIR}
+    command: ["--data-path=data/Node-${NUM_DIR}",
+              "--genesis-file=config/genesis.json",
+              "--bootnodes=\"${ENODE_URL}\"",
+              "--rpc-http-enabled",
+              "--rpc-http-api=ETH,NET,QBFT,ADMIN",
+              "--host-allowlist=\"*\"",
+              "--rpc-http-cors-origins=\"all\"",
+              "--rpc-http-port=${RPC_PORT}",
+              "--rpc-http-host=0.0.0.0",
+              "--p2p-port=${P2P_PORT}",
+              "--metrics-enabled=true",
+              "--metrics-port=${METRIC_PORT}",
+              "--metrics-host=0.0.0.0",
+              "--profile=ENTERPRISE"]
+
+    volumes:
+      - ./config:/opt/besu/config
+      - ./data-node:/opt/besu/data
+    
+    ports:
+      - ${RPC_PORT}:${RPC_PORT}
+      - ${P2P_PORT}:${P2P_PORT}
+      - ${METRIC_PORT}:${METRIC_PORT}
+    network_mode: "host" 
+    environment:
+      - BESU_P2P_HOST=${IP_EXTERNE}   
 
   prometheus:
     image: prom/prometheus:latest
