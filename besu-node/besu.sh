@@ -46,8 +46,7 @@ while [[ $# -gt 0 ]]; do
     --start)
       MODE="start"
       IS_BOOT="$2"
-      IS_VALID="$3"
-      shift 3
+      shift 2
       ;;
     --num-dir)
       NUM_DIR="$2"
@@ -93,7 +92,8 @@ echo "GRAF_PORT=$GRAF_PORT" >> .env
 
 if [[ "$(uname -s)" = "Darwin" ]]; then
 	IP_EXTERNE=$(scutil --nwi | grep address | cut -d ':' -f 2 | cut -d ' ' -f 2)	
-elif [[ "$(uname -s)" = "Linux" ]]; then
+elif [[ "$(uname -s)" = "Linux" ]]; then 
+  # Faire un alias de hostname -I qui exécute hostname -i si sur un linux autre que debian
 	IP_EXTERNE=$(hostname -I | awk '{print $1}')  
 else
 	echo "Système inconnu"
@@ -122,10 +122,6 @@ case $MODE in
         docker compose down -v
         docker compose up -d create-qbft
         docker compose start create-qbft
-        docker compose up -d prometheus
-	    	docker compose start prometheus
-		    docker compose up -d grafana
-		    docker compose start grafana
 
         sh ./script/recuperationData.sh "./data-node/Node-$NUM_DIR" "create-qbft-$NUM_DIR"
         ;;
@@ -167,5 +163,7 @@ fi
 
 echo "Opération terminée."
 
-
-mv ./data-node/Node-$NUM_DIR/data/key ./data-node/Node-$NUM_DIR/data/privateKey.txt
+docker compose up -d prometheus
+docker compose start prometheus
+docker compose up -d grafana
+docker compose start grafana
