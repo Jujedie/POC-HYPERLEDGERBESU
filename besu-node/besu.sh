@@ -94,7 +94,7 @@ echo "GRAF_PORT=$GRAF_PORT" >> .env
 if [[ "$(uname -s)" = "Darwin" ]]; then
 	IP_EXTERNE=$(scutil --nwi | grep address | cut -d ':' -f 2 | cut -d ' ' -f 2)	
 elif [[ "$(uname -s)" = "Linux" ]]; then
-	IP_EXTERNE=$(hostname -i | awk '{print $1}')  
+	IP_EXTERNE=$(hostname -I | awk '{print $1}')  
 else
 	echo "Système inconnu"
 	exit 1
