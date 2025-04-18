@@ -135,11 +135,11 @@ case $MODE in
         if [ "$IS_BOOT" = "true" ]; then
             docker compose up -d join-bootnode
             docker compose start join-bootnode
-            sh ./script/recuperationData.sh "./data-node/Node-$NUM_DIR" "$P2P_PORT" "join-bootnode-$NUM_DIR"
+            sh ./script/recuperationData.sh "./data-node/Node-$NUM_DIR" "join-bootnode-$NUM_DIR"
         else
             docker compose up -d join-node
             docker compose start join-node
-            sh ./script/recuperationData.sh "./data-node/Node-$NUM_DIR" "$P2P_PORT" "join-node-$NUM_DIR"
+            sh ./script/recuperationData.sh "./data-node/Node-$NUM_DIR" "join-node-$NUM_DIR"
         fi
         ;;
     start)
