@@ -26,7 +26,7 @@ cat <<EOF > qbftConfigFile.json
     "blockchain": {
         "nodes": {
             "generate": true,
-            "count": 1
+            "count": 4
         }
     }
 }
@@ -42,13 +42,25 @@ besu operator generate-blockchain-config \
 mv networkFiles/genesis.json ./config/
 mv qbftConfigFile.json ./config/
 # Create destination directory if needed
-mkdir -p ./data-node/Node-1
 
-# Find and move the key file
-KEY_FILE=$(find networkFiles -name "key" -type f)
-mv "$KEY_FILE" ./data-node/Node-1/
-  
-rm -fr networkFiles
+
+# Handle all key files, move each to appropriate Node directory
+echo "Moving key files to Node directories..."
+# Wait for the directory to exist
+while [ ! -d "networkFiles/keys/" ]; do
+    echo "Waiting for 'networkFiles/key/' directory to be created..."
+    sleep 1
+done
+
+i=1
+for key in $(ls networkFiles/keys) 
+do
+    mkdir -p ./data-node/Node-$i
+	mv networkFiles/keys/$key/* ./data-node/Node-$i
+	i=$(( i + 1 ))
+done
+
+rm -rf networkFiles
 
 echo "Fichier genesis.json créé avec succès dans le répertoire config."
 echo "Démarrage du conteneur Besu..."

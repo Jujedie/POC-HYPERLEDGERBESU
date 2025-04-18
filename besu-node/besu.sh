@@ -62,6 +62,11 @@ while [[ $# -gt 0 ]]; do
       show_help
       exit 0
       ;;
+    --validator)
+      MODE="validator"
+      ENODE_URL="$2"
+      shift 2
+      ;;
     *)
       echo "Option inconnue: $1"
       show_help
@@ -116,20 +121,43 @@ case $MODE in
         docker compose start create-qbft
 
         sh ./script/recuperationData.sh "./data-node/Node-$NUM_DIR" "create-qbft-$NUM_DIR"
+
+        while  [[ ! -f "./data-node/Node-$NUM_DIR/data/enodeUrl.txt" ]]; do
+          echo "En attente de la création du fichier enode..."
+          sleep 5
+        done
+        
+        # Store the enode of the bootstrap node
+        ENODE_BOOT_URL=$(cat ./data-node/Node-$NUM_DIR/data/enodeUrl.txt)
+        echo "Bootstrap node enode: $ENODE_BOOT_URL"
+
+        # Define the maximum number of nodes to create
+        NODE_MAX=${NODE_MAX:-4}  # Default to 3 if not set
+
+        # Loop to create and join additional nodes
+        for i in $(seq 2 $NODE_MAX); do
+          echo "Creating and joining node $i..."
+          bash ./besu.sh --validator "$ENODE_BOOT_URL" --rpc-port $((8545+i)) --p2p-port $((30303+i)) --metric-port $((9545+i)) --num-dir $i 
+        done
         ;;
     join)
         echo "Rejoindre une blockchain existante avec enode: $ENODE_URL" 
 
-        
-        docker compose up -d --no-recreate join-node
+        docker compose up -d join-node
         docker compose start join-node
-        sh ./script/recuperationData.sh "./data-node/Node-$NUM_DIR" "join-node-$NUM_DIR"
+        bash ./script/recuperationData.sh "./data-node/Node-$NUM_DIR" "join-node-$NUM_DIR"
         ;;
     start)
         echo "Démarrage du nœud existant..."
 
-        docker compose up -d --no-recreate start-node
+        docker compose up -d start-node
         docker compose start start-node
+        ;;
+    validator)
+        echo "Démarrage du nœud validateur..."
+
+        docker compose up -d validator-node-$NUM_DIR
+        docker compose start validator-node-$NUM_DIR
         ;;
     *)
         echo -e "Mode non reconnu: $MODE\nFermeture des conteneurs..."
