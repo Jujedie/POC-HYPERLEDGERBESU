@@ -4,22 +4,22 @@ import './App.css';
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Validator App</h1>
+
+      <div>
+        <input type="text" id="stringInput" placeholder="Entrez l'adresse du noeud" />
+        <input type="text" id="stringInput2" placeholder="IPValidateur:portRPC" />
+        <select id="booleanInput">
+          <option value="true">True</option>
+          <option value="false">False</option>
+        </select>
+      </div>
+      <button id="changeValidator" onClick={() => changeValidateur()}>Envoyer la requête</button>
     </div>
   );
+}
+
+function changeValidateur() {
 }
 
 export default App;
