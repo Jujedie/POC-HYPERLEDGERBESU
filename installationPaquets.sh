@@ -10,7 +10,6 @@ wget https://github.com/hyperledger/besu/releases/download/25.4.0/besu-25.4.0.ta
 sudo tar -xvf besu-25.4.0.tar.gz -C /opt
 sudo mv /opt/besu-25.4.0 /opt/besu
 echo "export PATH=\$PATH:/opt/besu/bin" >> ~/.bashrc
-source ~/.bashrc
 
 # Installation de Docker
 
@@ -38,5 +37,8 @@ echo "Docker installé, veuillez redémarrer votre machine pour que les modifica
 
 # Installation de NodeJS
 
+sudo apt install nvm
 sudo apt install npm
 sudo apt install npx
+
+source ~/.bashrc
