@@ -10,7 +10,7 @@ cat <<EOF > qbftConfigFile.json
 			"chainId": 1337,
 			"berlinBlock": 0,
 			"qbft": {
-				"epochLength": 1,
+				"epochLength": 1000,
 				"blockperiodseconds": 5,
 				"requesttimeoutseconds": 10
 			}
