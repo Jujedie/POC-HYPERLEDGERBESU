@@ -1,6 +1,6 @@
 import './App.css';
 
-
+const operationEnCour = {};
 
 function App() {
   return (
