@@ -103,7 +103,10 @@ if [[ "$(uname -s)" = "Darwin" ]]; then
 	IP_EXTERNE=$(scutil --nwi | grep address | cut -d ':' -f 2 | cut -d ' ' -f 2)	
 elif [[ "$(uname -s)" = "Linux" ]]; then 
   # Faire un alias de hostname -I qui exécute hostname -i si sur un linux autre que debian
-	IP_EXTERNE=$(hostname -I | awk '{print $1}')  
+	IP_EXTERNE=$(hostname -I 2>/dev/null | awk '{print $1}')  
+	if [[ -z "$IP_EXTERNE" ]]; then
+		IP_EXTERNE=$(hostname -i | awk '{print $1}')  
+	fi
 else
 	echo "Système inconnu"
 	exit 1
