@@ -63,7 +63,7 @@ function changeValidateur() {
 
 function waitForVoteApplication() {
   const intervalId = setInterval(() => {
-    
+
     const addresses = Object.keys(operationEnCour);
     for (const address of addresses) {
       if (operationEnCour[address] === undefined) {
@@ -120,7 +120,6 @@ function discardValidatorVote(url, address) {
     .then(response => response.json())
     .then(data => {
       console.log("Vote discarded:", data);
-      alert("Vote terminé et discard exécuté !");
     });
 }
 
