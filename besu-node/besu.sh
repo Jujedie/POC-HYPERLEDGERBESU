@@ -137,7 +137,7 @@ case $MODE in
         # Loop to create and join additional nodes
         for i in $(seq 2 $NODE_MAX); do
           echo "Creating and joining node $i..."
-          bash ./besu.sh --validator "$ENODE_BOOT_URL" --rpc-port $((8545+i)) --p2p-port $((30303+i)) --metric-port $((9545+i)) --num-dir $i 
+          bash ./besu.sh --validator "$ENODE_BOOT_URL" --rpc-port $((8544+i)) --p2p-port $((30302+i)) --metric-port $((9544+i)) --num-dir $i 
         done
         ;;
     join)
