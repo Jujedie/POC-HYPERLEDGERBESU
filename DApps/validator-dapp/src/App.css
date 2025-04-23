@@ -43,12 +43,12 @@ th input {
   border: dashed;
 }
 
-table button {
+button {
   padding: 10px 20px;
   font-size: 16px;
-  background-color: #33393a;
+  color: #33393a;
   border: none;
-  color: white;
+  background-color: white;
   cursor: pointer;
   padding: 10px 20px;
   border-radius: 5px;
