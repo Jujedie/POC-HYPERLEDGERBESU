@@ -21,7 +21,7 @@ NUM_DIR="1"
 RPC_PORT=8545
 P2P_PORT=30303
 METRIC_PORT=9545
-GRAF_PORT=3000
+GRAF_PORT=3001
 PROM_PORT=9090
 
 # Analyse des arguments
@@ -112,6 +112,8 @@ fi
 
 case $MODE in
     new)
+        rm -rf ./data-node/Node-*
+
         echo "Création d'une nouvelle blockchain..."
 
         sh ./script/creationBesu.sh
@@ -121,26 +123,12 @@ case $MODE in
         docker compose start create-qbft
 
         sh ./script/recuperationData.sh "./data-node/Node-$NUM_DIR" "create-qbft-$NUM_DIR"
-
-        while  [[ ! -f "./data-node/Node-$NUM_DIR/data/enodeUrl.txt" ]]; do
-          echo "En attente de la création du fichier enode..."
-          sleep 5
-        done
-        
-        # Store the enode of the bootstrap node
-        ENODE_BOOT_URL=$(cat ./data-node/Node-$NUM_DIR/data/enodeUrl.txt)
-        echo "Bootstrap node enode: $ENODE_BOOT_URL"
-
-        # Define the maximum number of nodes to create
-        NODE_MAX=${NODE_MAX:-4}  # Default to 3 if not set
-
-        # Loop to create and join additional nodes
-        for i in $(seq 2 $NODE_MAX); do
-          echo "Creating and joining node $i..."
-          bash ./besu.sh --validator "$ENODE_BOOT_URL" --rpc-port $((8545+i)) --p2p-port $((30303+i)) --metric-port $((9545+i)) --num-dir $i 
-        done
         ;;
     join)
+        if [ ! -d "./data-node/Node-$NUM_DIR/data" ]; then 
+          mkdir -p "./data-node/Node-$NUM_DIR/data"; 
+        fi
+
         echo "Rejoindre une blockchain existante avec enode: $ENODE_URL" 
 
         docker compose up -d join-node
