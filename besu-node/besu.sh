@@ -12,6 +12,7 @@ show_help() {
   echo "  --p2p-port <PORT>                       Port P2P (défaut: 30303)"
   echo "  --metric-port <PORT>                    Port Metric (défaut: 9545)"
   echo "  --help                                  Afficher cette aide"
+  echo "  --no-nginx							  Ne pas lancer le reverse proxy"
 }
 
 # Déclaration des variables
@@ -23,6 +24,8 @@ P2P_PORT=30303
 METRIC_PORT=9545
 GRAF_PORT=3001
 PROM_PORT=9090
+NGINX=true
+NGINX_PORT=80
 
 # Analyse des arguments
 while [[ $# -gt 0 ]]; do
@@ -67,6 +70,14 @@ while [[ $# -gt 0 ]]; do
       ENODE_URL="$2"
       shift 2
       ;;
+	--no-nginx)
+		NGINX=false
+		shift 1
+		;;
+	--nginx-port)
+		NGINX_PORT=$2 
+		shift 2 
+		;;
     *)
       echo "Option inconnue: $1"
       show_help
@@ -86,12 +97,13 @@ echo "ENODE_URL=$ENODE_URL" >> .env
 echo "METRIC_PORT=$METRIC_PORT" >> .env
 echo "PROM_PORT=$PROM_PORT" >> .env
 echo "GRAF_PORT=$GRAF_PORT" >> .env
+echo "NGINX_PORT=$NGINX_PORT" >> .env
 
 if [[ "$(uname -s)" = "Darwin" ]]; then
 	IP_EXTERNE=$(scutil --nwi | grep address | cut -d ':' -f 2 | cut -d ' ' -f 2)	
 elif [[ "$(uname -s)" = "Linux" ]]; then 
   # Faire un alias de hostname -I qui exécute hostname -i si sur un linux autre que debian
-	IP_EXTERNE=$(hostname -I | awk '{print $1}')  
+	IP_EXTERNE=$(hostname -i | awk '{print $1}')  
 else
 	echo "Système inconnu"
 	exit 1
@@ -155,6 +167,18 @@ case $MODE in
         exit 1
         ;;
 esac
+
+if [[ "$NGINX" = true ]]; then
+	if ! docker compose ps -a | grep -q nginx; then
+		echo "Création et démarrage d'un reverse proxy..."
+		docker compose up -d nginx
+		docker compose start nginx
+	else
+		echo "Redémarrage du reverse proxy..."
+		docker compose restart nginx	
+	fi
+	
+fi
 
 echo "Opération terminée."
 
