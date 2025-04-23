@@ -29,12 +29,12 @@ cat <<EOF > qbftConfigFile.json
 		}
 	}
 },
-	"blockchain": {
+"blockchain": {
 		"nodes": {
 			"generate": true,
 			"count": 1
 		}
-}
+	}
 }
 EOF
 
