@@ -32,7 +32,7 @@ cat <<EOF > qbftConfigFile.json
 	"blockchain": {
 		"nodes": {
 			"generate": true,
-			"count": 4
+			"count": 1
 		}
 }
 }
@@ -61,7 +61,7 @@ done
 i=1
 for key in $(ls networkFiles/keys) 
 do
-	mkdir -p ./data-node/Node-$i
+	mkdir -p ./data-node/Node-$i/data
 	mv networkFiles/keys/$key/* ./data-node/Node-$i
 	i=$(( i + 1 ))
 done
