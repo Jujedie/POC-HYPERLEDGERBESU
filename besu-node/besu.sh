@@ -12,7 +12,7 @@ show_help() {
   echo "  --p2p-port <PORT>                       Port P2P (défaut: 30303)"
   echo "  --metric-port <PORT>                    Port Metric (défaut: 9545)"
   echo "  --help                                  Afficher cette aide"
-  echo "  --no-nginx							  Ne pas lancer le reverse proxy"
+  echo "  --no-nginx							                Ne pas lancer le reverse proxy"
 }
 
 # Déclaration des variables
@@ -198,3 +198,7 @@ if ! docker compose ps -a | grep -q grafana; then
   docker compose up -d grafana
   docker compose start grafana
 fi
+
+sh ./script/nginxConfiguration.sh
+
+echo "Configuration de Nginx terminée."
