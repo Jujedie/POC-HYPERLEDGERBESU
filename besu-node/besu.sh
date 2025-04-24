@@ -171,18 +171,6 @@ case $MODE in
         ;;
 esac
 
-if [[ "$NGINX" = true ]]; then
-	if ! docker compose ps -a | grep -q nginx; then
-		echo "Création et démarrage d'un reverse proxy..."
-		docker compose up -d nginx
-		docker compose start nginx
-	else
-		echo "Redémarrage du reverse proxy..."
-		docker compose restart nginx	
-	fi
-	
-fi
-
 echo "Opération terminée."
 
 cp ./data-node/Node-$NUM_DIR/key ./data-node/Node-$NUM_DIR/data/privateKey.txt
@@ -199,6 +187,16 @@ if ! docker compose ps -a | grep -q grafana; then
   docker compose start grafana
 fi
 
-sh ./script/nginxConfiguration.sh
+if [[ "$NGINX" = true ]]; then
+	if ! docker compose ps -a | grep -q nginx; then
+		echo "Création et démarrage d'un reverse proxy..."
+		docker compose up -d nginx
+		docker compose start nginx
+	else
+		echo "Redémarrage du reverse proxy..."
+		docker compose restart nginx	
+	fi
+	sh ./script/nginxConfiguration.sh
+fi
 
 echo "Configuration de Nginx terminée."
