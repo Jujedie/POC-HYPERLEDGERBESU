@@ -49,9 +49,12 @@ EOF
 		peer_id=$(echo "$peer_id" | xxd -r -p)
 		peer_ip=$(echo "$peer" | cut -d, -f1)
 
-		hash_bin=$(printf '%s' "$peer_id" | openssl dgst -binary -sha3-256)
+		hash_bin=$(printf '%s' "$peer_id"  | openssl dgst -binary -sha3-256)
 		addr_hex=$(printf '%s' "$hash_bin" | tail -c 20 | xxd -p)
 		addr="0x${addr_hex,,}"
+
+		echo "ip: $peer_ip"
+		echo "addr: $addr"
 
 		if is_validator "$addr" "$VALIDATORS"; then
 			echo "			allow $peer_ip;" >> ../nginx.conf
