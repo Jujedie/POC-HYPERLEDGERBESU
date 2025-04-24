@@ -174,5 +174,3 @@ if ! docker compose ps -a | grep -q grafana; then
   docker compose up -d grafana
   docker compose start grafana
 fi
-
-echo "Configuration de Nginx terminée."
