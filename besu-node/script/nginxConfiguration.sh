@@ -1,10 +1,12 @@
 #!/bin/bash
 RPC_URL="http://localhost:8545"
 
-while [[true]];do
+echo "Configuration de Nginx"
+
+while true; do
 	# Écriture de la première partie du fichier
 
-cat <<EOF > ../nginx.conf
+cat <<EOF > ./nginx.conf
 worker_processes 1;
 
 events {
@@ -21,13 +23,17 @@ EOF
 	  | jq -r '.result[].network.remoteAddress' | cut -d: -f1 | sort | uniq)
 
 	for ip in $PEERS; do
-	  echo "			allow $ip;" >> ../nginx.conf
+		echo "ip: $ip"
+		echo "			allow $ip;" >> ./nginx.conf
 	done
 
-	# Écriture de la deuxième partie du fichier
+	# Écriture de la deuxième partie du fichier | deny all;
 
-cat <<EOF >> ../nginx.conf
-			deny all;
+host= "\$host"
+remote_addr= "\$remote_addr"
+
+cat <<EOF >> ./nginx.conf
+			
 
 			proxy_pass http://127.0.0.1:8545;
 			proxy_set_header Host $host;
@@ -57,14 +63,14 @@ EOF
 		echo "addr: $addr"
 
 		if is_validator "$addr" "$VALIDATORS"; then
-			echo "			allow $peer_ip;" >> ../nginx.conf
+			echo "			allow $peer_ip;" >> ./nginx.conf
 		fi
 	done
 
-	# Écriture de la troisième partie du fichier
+	# Écriture de la troisième partie du fichier | deny all;
 
-cat <<EOF >> ../nginx.conf
-			deny all;
+cat <<EOF >> ./nginx.conf
+			
 			
 			proxy_pass http://127.0.0.1:8545;
 		}
