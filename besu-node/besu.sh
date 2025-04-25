@@ -131,7 +131,7 @@ case $MODE in
 
         bash ./script/creationIdentifiants.sh $NUM_DIR
 
-        sleep 5
+        sleep 2
 
         docker compose up -d join-node
         docker compose start join-node
