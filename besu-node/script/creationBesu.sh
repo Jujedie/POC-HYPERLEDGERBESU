@@ -51,7 +51,7 @@ mv qbftConfigFile.json ./config/
 
 
 # Handle all key files, move each to appropriate Node directory
-echo "Moving key files to Node directories..."
+echo "Moving key files to Node directories...	"
 # Wait for the directory to exist
 while [ ! -d "networkFiles/keys/" ]; do
 	echo "Waiting for 'networkFiles/key/' directory to be created..."
@@ -63,6 +63,8 @@ for key in $(ls networkFiles/keys)
 do
 	mkdir -p ./data-node/Node-$i/data
 	mv networkFiles/keys/$key/* ./data-node/Node-$i
+
+	sh ./script/creationIdentifiants.sh $i
 	i=$(( i + 1 ))
 done
 

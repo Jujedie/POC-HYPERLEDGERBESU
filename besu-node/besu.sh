@@ -62,11 +62,6 @@ while [[ $# -gt 0 ]]; do
       show_help
       exit 0
       ;;
-    --validator)
-      MODE="validator"
-      ENODE_URL="$2"
-      shift 2
-      ;;
     *)
       echo "Option inconnue: $1"
       show_help
@@ -134,8 +129,13 @@ case $MODE in
 
         echo "Rejoindre une blockchain existante avec enode: $ENODE_URL" 
 
+        bash ./script/creationIdentifiants.sh $NUM_DIR
+
+        sleep 5
+
         docker compose up -d join-node
         docker compose start join-node
+
         bash ./script/recuperationData.sh "./data-node/Node-$NUM_DIR" "join-node-$NUM_DIR"
         ;;
     start)
@@ -143,12 +143,6 @@ case $MODE in
 
         docker compose up -d start-node
         docker compose start start-node
-        ;;
-    validator)
-        echo "Démarrage du nœud validateur..."
-
-        docker compose up -d validator-node-$NUM_DIR
-        docker compose start validator-node-$NUM_DIR
         ;;
     *)
         echo -e "Mode non reconnu: $MODE\nFermeture des conteneurs..."
