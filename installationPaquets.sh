@@ -5,8 +5,13 @@ sudo apt-get update
 # Installation de Java 21 
 wget https://download.bell-sw.com/java/21.0.7+9/bellsoft-jdk21.0.7+9-linux-aarch64.deb
 sudo dpkg --install bellsoft-jdk21*-linux-aarch64.deb
+rm bellsoft-jdk21*-linux-aarch64.deb
 
-# Installation de besu wget https://github.com/hyperledger/besu/releases/download/25.4.0/besu-25.4.0.tar.gz sudo tar -xvf besu-25.4.0.tar.gz -C /opt sudo mv /opt/besu-25.4.0 /opt/besu
+# Installation de besu 
+wget https://github.com/hyperledger/besu/releases/download/25.4.0/besu-25.4.0.tar.gz 
+sudo tar -xvf besu-25.4.0.tar.gz -C /opt 
+rm besu-25.4.0.tar.gz 
+sudo mv /opt/besu-25.4.0 /opt/besu
 echo "export PATH=\$PATH:/opt/besu/bin" >> ~/.bashrc
 
 # Installation de Docker
@@ -36,5 +41,7 @@ echo "Docker installé, veuillez redémarrer votre machine pour que les modifica
 # Installation de NodeJS
 
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+
+nvm install node
 
 source ~/.bashrc
