@@ -11,7 +11,6 @@ show_help() {
   echo "  --rpc-port <PORT>                       Port RPC (défaut: 8545)"
   echo "  --p2p-port <PORT>                       Port P2P (défaut: 30303)"
   echo "  --metric-port <PORT>                    Port Metric (défaut: 9545)"
-  echo "  --remote <IP> <USERNAME> <CHEMIN>       Si la commande est exécutée à distance, spécifiez l'IP et le nom d'utilisateur et le chemin"
   echo "  --help                                  Afficher cette aide"
 }
 
@@ -20,18 +19,11 @@ MODE="new"
 REMOVE_NODES="false"
 ENODE_URL=" "
 NUM_DIR="1"
-
 RPC_PORT=8545
 P2P_PORT=30303
-
 METRIC_PORT=9545
 GRAF_PORT=3000
 PROM_PORT=9090
-
-IS_REMOTE="false"
-REMOTE_IP=" "
-REMOTE_USER=" "
-CHEMIN=" "
 
 # Analyse des arguments
 while [[ $# -gt 0 ]]; do
@@ -68,13 +60,6 @@ while [[ $# -gt 0 ]]; do
       METRIC_PORT="$2"
       shift 2
       ;;
-    --remote)
-      IS_REMOTE="true"
-      REMOTE_IP="$2"
-      REMOTE_USER="$3"
-      CHEMIN="$4"
-      shift 4 
-      ;;
     --help)
       show_help
       exit 0
@@ -86,29 +71,6 @@ while [[ $# -gt 0 ]]; do
       ;;
   esac
 done
-
-if [[ "$IS_REMOTE" == "true" ]]; then
-  echo "Exécution à distance sur $REMOTE_IP avec l'utilisateur $REMOTE_USER"
-  case $MODE in
-    new)
-      echo "Création d'une nouvelle blockchain..."
-      ssh "$REMOTE_USER@$REMOTE_IP" "bash -s" < $CHEMIN/besu-node/script/creationBesu.sh --new $REMOVE_NODES --num-dir $NUM_DIR --rpc-port $RPC_PORT --p2p-port $P2P_PORT --metric-port $METRIC_PORT
-      ;;
-    join)
-      echo "Rejoindre une blockchain existante avec enode: $ENODE_URL"
-      ssh "$REMOTE_USER@$REMOTE_IP" "bash -s" < $CHEMIN/besu-node/script/creationIdentifiants.sh --join $ENODE_URL --num-dir $NUM_DIR --rpc-port $RPC_PORT --p2p-port $P2P_PORT --metric-port $METRIC_PORT
-      ;;
-    start)
-      echo "Démarrage du nœud existant..."
-      ssh "$REMOTE_USER@$REMOTE_IP" "bash -s" < $CHEMIN/besu-node/script/startNode.sh --start $ENODE_URL --num-dir $NUM_DIR --rpc-port $RPC_PORT --p2p-port $P2P_PORT --metric-port $METRIC_PORT
-      ;;
-    *)
-      echo "Mode non reconnu: $MODE"
-      exit 1
-      ;;
-  esac
-  exit 0
-fi
 
 # Écriture du fichier de configuration
 echo "Écriture du fichier de configuration..."
