@@ -1,28 +1,28 @@
 # PoC-HyperledgerBesu
 
-Avant de commencer, assurez-vous d'être sur une machine Linux,
+Avant de commencer, assurez-vous d'être sur une machine Linux
 et d'avoir un compte sudoer.
 
 ## Installation
 
-Après avoir cloner ce répertoire, exécutez les commandes suivante pour installer les dépendances :
+Après avoir cloné ce répertoire, exécutez les commandes suivantes pour installer les dépendances :
 
 ```bash
 chmod +x installationPaquets.sh
 sh installationPaquets.sh
 ```
 
-A la suite de l'installation, vous devez redémarrer votre machine.
+À la suite de l'installation, vous devez redémarrer votre machine.
 
 ## Lancement du projet
 
-Pour lancer ce projet, tout d'abord rendez vous dans le dossier besu-node :
+Pour lancer ce projet, rendez-vous d'abord dans le dossier besu-node :
 
 ```bash
 cd ./besu-node
 ```
 
-Si vous voulez vous renseigner sur les divers commandes éxécutez la commande suivante :
+Si vous souhaitez obtenir des informations sur les différentes commandes, exécutez la commande suivante :
 
 ```bash
 sh besu.sh --help
@@ -36,15 +36,17 @@ Pour initialiser une blockchain, exécutez la commande suivante :
 sh besu --new
 ```
 
-Lors de la création d'une blockchain le noeud initial sera un bootnode (nœud de démarrage).
+Lors de la création d'une blockchain, le nœud initial sera un bootnode (nœud de démarrage).
 
-Additionnellement, vous pouvez spécifier le port rpc, p2p. 
+Vous pouvez également spécifier le port RPC et le port P2P :
 
 ```bash
 sh besu --new --rpc-port <PORT> --p2p-port <PORT>
 ```
 
-### Joindre une blockchain existante
+Attention : si vous recréez une blockchain, tous les fichiers précédemment créés seront supprimés.
+
+### Rejoindre une blockchain existante
 
 Pour rejoindre une blockchain existante, exécutez la commande suivante :
 
@@ -52,9 +54,9 @@ Pour rejoindre une blockchain existante, exécutez la commande suivante :
 sh besu --join <ENODE_URL_BOOTNODE>
 ```
 
-Il est conseillé de spécifier un enode d'un bootnode, l'enode peut être retrouver dans le répertoire ./data-node/Node-[NUMERO]/data/enodeUrl.txt.
+Il est conseillé de spécifier un enode d'un bootnode. L'enode peut être retrouvé dans le répertoire `./data-node/Node-[NUMERO]/data/enodeUrl.txt`.
 
-Il est impératif de spécifier le port rpc, p2p et metric si vous souhaitez éxécuter plusieurs noeuds sur une même machine, pour cela exécutez la commande suivante :
+Il est impératif de spécifier le port RPC, P2P et metric si vous souhaitez exécuter plusieurs nœuds sur une même machine. Pour cela, exécutez la commande suivante :
 
 ```bash
 sh besu --join <ENODE_URL_BOOTNODE> --rpc-port <PORT> --p2p-port <PORT> --metric-port <PORT> --num-dir <NUMERO>
@@ -62,18 +64,18 @@ sh besu --join <ENODE_URL_BOOTNODE> --rpc-port <PORT> --p2p-port <PORT> --metric
 
 ### Démarrer un nœud
 
-Pour démarrer un noeud assurez vous d'avoir un noeud préalablement créé, puis exécutez la commande suivante :
+Pour démarrer un nœud, assurez-vous d'en avoir préalablement créé un, puis exécutez la commande suivante :
 
 ```bash
-sh besu --start --num-dir <NUMERO>
+sh besu --start <ENODE_URL_BOOTNODE> --num-dir <NUMERO>
 ```
 
-Le numéro de répertoire est nécessaire si le noeud a démarré est dans un répertoire autre que ./data-node/Node-1
+Le numéro de répertoire est nécessaire si le nœud à démarrer se trouve dans un répertoire autre que `./data-node/Node-1`.
 
-### Arrêter un noeud
+### Arrêter un nœud
 
-Pour arreter un noeud vous pouvez utiliser docker rm pour supprimer le container ou utiliser docker compose down -v.
-Cependant docker compose down -v enlève tous les containers créés.
+Pour arrêter un nœud, vous pouvez utiliser `docker rm` pour supprimer le conteneur ou utiliser `docker compose down -v`.
+Cependant, `docker compose down -v` supprime tous les conteneurs créés.
 
 ```bash
 docker compose down -v
@@ -83,16 +85,31 @@ docker compose down -v
 
 Pour accéder aux métriques de la blockchain, vous devez d'abord avoir démarré une blockchain.
 
-Ensuite rendez vous à l'adresse suivante :
+Ensuite, rendez-vous à l'adresse suivante :
 http://localhost:3000
 
-le mot de passe et l'identifiant peuvent être changé dans compose.yaml.
+Le mot de passe et l'identifiant peuvent être changés dans `compose.yaml`.
 
-Le mot de passe et l'identifiant par défaut est : admin
+Le mot de passe et l'identifiant par défaut sont : admin
 
-Dans menu cliquer sur <kbd>Connections > Data sources > Add new data source > Prometheus</kbd>. Rentrer http://localhost:9090 dans la partie Connection Prometheus server URL. Descendez la page et appuyer sur le bouton Save & test.
+Dans le menu, cliquez sur <kbd>Dashboards > besu</kbd> afin d'accéder aux métriques de la blockchain.
 
-Il faut alors vous rentre dans <kbd>Dashboards > New > Import dashboard</kbd> (Cliquer sur discard si un popup apparaît). Importer l'id 16455 en l'entrant dans la zone de texte prévu à cet effet et cliquer ensuite sur load. Il faut maintenant sélectionner notre data source dans la partie prometheus et importer.
+## Démarrer une DApp
+
+Pour démarrer une DApp, rendez-vous dans le dossier DApps à la racine du projet :
+
+```bash
+cd ./DApps
+```
+
+Ensuite, si vous souhaitez démarrer une DApp en particulier, rendez-vous dans le dossier correspondant, par exemple `validator-dapp`, et exécutez la commande `npm start` :
+
+```bash
+cd ./validator-dapp
+npm start
+```
+
+Cependant, comme le port 3000 est déjà utilisé par Grafana, vous devrez le changer. Il vous sera donc demandé de confirmer si vous souhaitez changer ce port automatiquement.
 
 ## Notes
 
@@ -101,7 +118,7 @@ Si la commande ci-dessous ne renvoie rien :
 hostname -I
 ```
 
-Alors executez la commande suivante :
+Alors exécutez la commande suivante :
 ```bash
 cat << EOF >> test
 hostname() {
