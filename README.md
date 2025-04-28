@@ -109,7 +109,7 @@ cd ./validator-dapp
 npm start
 ```
 
-Cependant, comme le port 3000 est déjà utilisé par Grafana, vous devrez le changer. Il vous sera donc demandé de confirmer si vous souhaitez changer ce port automatiquement.
+Cependant, comme le port 3000 est déjà utilisé par Grafana. Il vous sera donc demandé de confirmer si vous souhaitez changer ce port automatiquement.
 
 ## Notes
 
