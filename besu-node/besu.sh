@@ -4,7 +4,7 @@
 show_help() {
   echo "Usage: $0 [OPTIONS]"
   echo "Options:"
-  echo "  --new                                   Créer une nouvelle blockchain (par défaut)"
+  echo "  --new <REMOVE_NODES>                    Créer une nouvelle blockchain (par défaut)"
   echo "  --join <ENODE_URL>                      Rejoindre une blockchain existante"
   echo "  --start <ENODE_URL>                     Démarrer le nœud en mode bootstrap (par défaut: true)"
   echo "  --num-dir <DIR>                         Numéro du répertoire du nœud (défaut: 1)"
@@ -16,6 +16,7 @@ show_help() {
 
 # Déclaration des variables
 MODE="new"
+REMOVE_NODES="false"
 ENODE_URL=" "
 NUM_DIR="1"
 RPC_PORT=8545
@@ -30,7 +31,8 @@ while [[ $# -gt 0 ]]; do
   case $key in
     --new)
       MODE="new"
-      shift 1
+      REMOVE_NODES="$2"
+      shift 2
       ;;
     --join)
       MODE="join"
@@ -110,7 +112,10 @@ fi
 
 case $MODE in
     new)
-        rm -rf ./data-node/Node-*
+        if [ "$REMOVE_NODES" = "true" ]; then
+            echo "Suppression des nœuds existants..."
+            rm -rf ./data-node/Node-*
+        fi
 
         echo "Création d'une nouvelle blockchain..."
 
@@ -143,6 +148,8 @@ case $MODE in
 
         docker compose up -d start-node
         docker compose start start-node
+
+        sh ./script/recuperationData.sh "./data-node/Node-$NUM_DIR" "start-node-$NUM_DIR"
         ;;
     *)
         echo -e "Mode non reconnu: $MODE\nFermeture des conteneurs..."
