@@ -33,7 +33,7 @@ sh besu.sh --help
 Pour initialiser une blockchain, exécutez la commande suivante :
 
 ```bash
-sh besu --new
+sh besu --new <REMOVE_NODES>
 ```
 
 Lors de la création d'une blockchain, le nœud initial sera un bootnode (nœud de démarrage).
@@ -44,7 +44,7 @@ Vous pouvez également spécifier le port RPC et le port P2P :
 sh besu --new --rpc-port <PORT> --p2p-port <PORT>
 ```
 
-Attention : si vous recréez une blockchain, tous les fichiers précédemment créés seront supprimés.
+Attention : si vous recréez une blockchain le programme ne supprimera pas les noeuds pré-existant, pour empêcher cela écrivez --new true et alors tous les fichiers précédemment créés seront supprimés.
 
 ### Rejoindre une blockchain existante
 
