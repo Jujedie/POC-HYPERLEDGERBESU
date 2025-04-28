@@ -128,10 +128,6 @@ case $MODE in
         sh ./script/recuperationData.sh "./data-node/Node-$NUM_DIR" "create-qbft-$NUM_DIR"
         ;;
     join)
-        if [ ! -d "./data-node/Node-$NUM_DIR/data" ]; then 
-          mkdir -p "./data-node/Node-$NUM_DIR/data"; 
-        fi
-
         echo "Rejoindre une blockchain existante avec enode: $ENODE_URL" 
 
         bash ./script/creationIdentifiants.sh $NUM_DIR
