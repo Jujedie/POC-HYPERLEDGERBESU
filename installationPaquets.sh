@@ -8,10 +8,10 @@ sudo dpkg --install bellsoft-jdk21*-linux-aarch64.deb
 rm bellsoft-jdk21*-linux-aarch64.deb
 
 # Installation de besu 
-wget https://github.com/hyperledger/besu/releases/download/25.4.0/besu-25.4.0.tar.gz 
-sudo tar -xvf besu-25.4.0.tar.gz -C /opt 
-rm besu-25.4.0.tar.gz 
-sudo mv /opt/besu-25.4.0 /opt/besu
+wget https://github.com/hyperledger/besu/releases/download/25.4.1/besu-25.4.1.tar.gz 
+sudo tar -xvf besu-25.4.1.tar.gz -C /opt 
+rm besu-25.4.1.tar.gz 
+sudo mv /opt/besu-25.4.1 /opt/besu
 echo "export PATH=\$PATH:/opt/besu/bin" >> ~/.bashrc
 
 # Installation de Docker
