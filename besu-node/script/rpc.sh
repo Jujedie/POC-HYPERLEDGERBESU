@@ -20,8 +20,11 @@ echo -n "Password: "
 read -s PASSWORD
 echo ""
 
+IP_EXTERNE=$(cat ../.env | grep IP_EXTERNE | cut -d '=' -f 2)
+RPC_PORT=$(cat ../.env | grep RPC_PORT | cut -d '=' -f 2)
+
 # Fetch the authentication token using the provided username and password
-TOKEN=$(curl -X POST --data '{"username":"'"$1"'","password":"'"$PASSWORD"'"}' http://localhost:8545/login 2>/dev/null | jq .token 2>/dev/null | tr -d '"')
+TOKEN=$(curl -X POST --data '{"username":"'"$1"'","password":"'"$PASSWORD"'"}' http://$IP_EXTERNE:$RPC_PORT/login 2>/dev/null | jq .token 2>/dev/null | tr -d '"')
 
 # Check if token retrieval was successful
 if [[ -z "$TOKEN" ]]; then
@@ -33,7 +36,5 @@ fi
 params=("${@:3}")
 params_str=$(IFS=,; echo "[${params[*]}]")
 
-IP_EXTERNE=$(cat ../.env | grep IP_EXTERNE | cut -d '=' -f 2)
-RPC_PORT=$(cat ../.env | grep RPC_PORT | cut -d '=' -f 2)
 # Call the JSON-RPC method and display the result
 curl -X POST -H "Authorization: Bearer $TOKEN" --data '{"jsonrpc":"2.0","method":"'"$2"'","params":'"$params_str"',"id":1}' http://$IP_EXTERNE:$RPC_PORT 2>/dev/null | jq .result
