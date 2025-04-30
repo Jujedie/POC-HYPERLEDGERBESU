@@ -25,7 +25,7 @@ P2P_PORT=30303
 METRIC_PORT=9545
 GRAF_PORT=3000
 PROM_PORT=9090
-AUTH_FILE="./config/auth.toml"
+AUTH_FILE="auth.toml"
 
 # Analyse des arguments
 while [[ $# -gt 0 ]]; do
