@@ -12,7 +12,7 @@ chmod +x installationPaquets.sh
 sh installationPaquets.sh
 ```
 
-Cependant si vous installer à plusieurs reprise ces packets, assurez-vous de supprimer le contenu du dossier /opt/besu
+Cependant si vous installer à plusieurs reprise ces packets, assurez-vous de supprimer le contenu du dossier /opt/besu.
 À la suite de l'installation, vous devez redémarrer votre machine.
 
 ## Lancement du projet
