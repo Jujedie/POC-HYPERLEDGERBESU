@@ -1,5 +1,0 @@
-
-POUR RÉCUPER LE TOKEN (dispo 5 minutes) : curl -X POST --data '{"username":"Node-1","password":"Node-1"}' http://localhost:8545/login
-/!\ ATTENTION : les identifiants doivent être ceux du noeud concerné par le curl.
-
-POUR EXECUTER UNE COMMANDE : curl -X POST -H "Authorization: Bearer {TOKEN}" --data '{"jsonrpc":"2.0","method":"methode","params":[],"id":1}' http://172.26.3.150:8545 | jq
