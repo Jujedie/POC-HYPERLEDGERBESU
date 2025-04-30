@@ -114,6 +114,11 @@ npm start
 
 Cependant, comme le port 3000 est déjà utilisé par Grafana. Il vous sera donc demandé de confirmer si vous souhaitez changer ce port automatiquement.
 
+Attention : si vous démarrez la DApp pour la première fois, n’oubliez pas de faire : 
+```bash
+npm install
+```
+
 ## Notes
 
 Si la commande ci-dessous ne renvoie rien :
