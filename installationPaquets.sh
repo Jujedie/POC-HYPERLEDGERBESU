@@ -43,7 +43,3 @@ echo "Docker installé, veuillez redémarrer votre machine pour que les modifica
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
 
 source ~/.bashrc
-
-nvm install node
-
-source ~/.bashrc
