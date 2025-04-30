@@ -12,6 +12,7 @@ chmod +x installationPaquets.sh
 sh installationPaquets.sh
 ```
 
+Cependant si vous installer à plusieurs reprise ces packets, assurez-vous de supprimer le contenu du dossier /opt/besu.
 À la suite de l'installation, vous devez redémarrer votre machine.
 
 ## Lancement du projet
@@ -47,6 +48,8 @@ sh besu --new --rpc-port <PORT> --p2p-port <PORT>
 Attention : si vous recréez une blockchain le programme ne supprimera pas les noeuds pré-existant, pour empêcher cela écrivez --new true et alors tous les fichiers précédemment créés seront supprimés.
 
 ### Rejoindre une blockchain existante
+
+Attention : Avant de pouvoir rejoindre ou démarrer un noeud, il est important de s'assurer que le bon genesis.json est dans le dossier config et d'avoir le bon enode de prêt pour la création ou le démarrage d'un noeud.
 
 Pour rejoindre une blockchain existante, exécutez la commande suivante :
 
