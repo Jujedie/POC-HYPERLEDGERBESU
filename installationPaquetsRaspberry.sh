@@ -3,12 +3,9 @@
 sudo apt-get update
 
 # Installation de Java 21 
-wget https://download.oracle.com/java/21/latest/jdk-21_linux-aarch64_bin.tar.gz
-sudo tar -xvf jdk-21_linux-aarch64_bin.tar.gz -C /opt
-rm jdk-21_linux-aarch64_bin.tar.gz
-sudo mv /opt/jdk-21 /opt/jdk
-echo "export JAVA_HOME=/opt/jdk" >> ~/.bashrc
-echo "export PATH=\$PATH:/opt/jdk/bin" >> ~/.bashrc
+docker pull eclipse-temurin:21
+echo alias java='docker run --rm -v "$PWD":/app -w /app eclipse-temurin:21 java' >> ~/.bashrc
+alias javac='docker run --rm -v "$PWD":/app -w /app eclipse-temurin:21 javac' >> ~/.bashrc
 
 # Installation de besu 
 wget https://github.com/hyperledger/besu/releases/download/25.4.1/besu-25.4.1.tar.gz 
