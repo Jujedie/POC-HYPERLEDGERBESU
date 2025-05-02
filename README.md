@@ -12,7 +12,7 @@ chmod +x installationPaquets.sh
 sh installationPaquets.sh
 ```
 
-Cependant si vous installer à plusieurs reprise ces packets, assurez-vous de supprimer le contenu du dossier /opt/besu
+Cependant si vous installer à plusieurs reprise ces packets, assurez-vous de supprimer le contenu du dossier /opt/besu.
 À la suite de l'installation, vous devez redémarrer votre machine.
 
 ## Lancement du projet
@@ -113,6 +113,11 @@ npm start
 ```
 
 Cependant, comme le port 3000 est déjà utilisé par Grafana. Il vous sera donc demandé de confirmer si vous souhaitez changer ce port automatiquement.
+
+Attention : si vous démarrez la DApp pour la première fois, n’oubliez pas de faire : 
+```bash
+npm install
+```
 
 ## Notes
 

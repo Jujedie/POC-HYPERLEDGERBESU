@@ -11,6 +11,7 @@ show_help() {
   echo "  --rpc-port <PORT>                       Port RPC (défaut: 8545)"
   echo "  --p2p-port <PORT>                       Port P2P (défaut: 30303)"
   echo "  --metric-port <PORT>                    Port Metric (défaut: 9545)"
+  echo "  --auth-file <FILE>                      Fichier d'authentification"
   echo "  --help                                  Afficher cette aide"
 }
 
@@ -24,6 +25,7 @@ P2P_PORT=30303
 METRIC_PORT=9545
 GRAF_PORT=3000
 PROM_PORT=9090
+AUTH_FILE="auth.toml"
 
 # Analyse des arguments
 while [[ $# -gt 0 ]]; do
@@ -58,6 +60,10 @@ while [[ $# -gt 0 ]]; do
       ;;
     --metric-port)
       METRIC_PORT="$2"
+      shift 2
+      ;;
+    --auth-file)
+      AUTH_FILE="$2"
       shift 2
       ;;
     --help)
@@ -130,7 +136,7 @@ case $MODE in
     join)
         echo "Rejoindre une blockchain existante avec enode: $ENODE_URL" 
 
-        bash ./script/creationIdentifiants.sh $NUM_DIR
+		cp $AUTH_FILE "./data-node/Node-$NUM_DIR/data/auth.toml"
 
         sleep 2
 
