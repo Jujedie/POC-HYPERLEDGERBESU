@@ -5,7 +5,7 @@ sudo apt-get update
 # Installation de Java 21 
 docker pull eclipse-temurin:21
 echo alias java='docker run --rm -v "$PWD":/app -w /app eclipse-temurin:21 java' >> ~/.bashrc
-alias javac='docker run --rm -v "$PWD":/app -w /app eclipse-temurin:21 javac' >> ~/.bashrc
+echo alias javac='docker run --rm -v "$PWD":/app -w /app eclipse-temurin:21 javac' >> ~/.bashrc
 
 # Installation de besu 
 wget https://github.com/hyperledger/besu/releases/download/25.4.1/besu-25.4.1.tar.gz 
