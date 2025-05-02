@@ -3,11 +3,12 @@
 sudo apt-get update
 
 # Installation de Java 21 
-curl -s "https://get.sdkman.io" | bash
-source "$HOME/.sdkman/bin/sdkman-init.sh"
-wget https://cdn.azul.com/zulu/bin/zulu21.42.19-ca-jdk21.0.7-linux_arm64.deb
-sudo dpkg --install zulu21.42.19-ca-jdk21.0.7-linux_arm64.deb
-rm zulu21.42.19-ca-jdk21.0.7-linux_arm64.deb
+wget https://download.oracle.com/java/21/latest/jdk-21_linux-aarch64_bin.tar.gz
+sudo tar -xvf jdk-21_linux-aarch64_bin.tar.gz -C /opt
+rm jdk-21_linux-aarch64_bin.tar.gz
+sudo mv /opt/jdk-21 /opt/jdk
+echo "export JAVA_HOME=/opt/jdk" >> ~/.bashrc
+echo "export PATH=\$PATH:/opt/jdk/bin" >> ~/.bashrc
 
 # Installation de besu 
 wget https://github.com/hyperledger/besu/releases/download/25.4.1/besu-25.4.1.tar.gz 
