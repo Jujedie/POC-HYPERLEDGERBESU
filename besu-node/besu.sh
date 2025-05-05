@@ -125,6 +125,8 @@ case $MODE in
 
         echo "Création d'une nouvelle blockchain..."
 
+        cp $AUTH_FILE "./data-node/Node-$NUM_DIR/data/auth.toml"
+
         sh ./script/creationBesu.sh
 
         docker compose down -v
@@ -136,7 +138,7 @@ case $MODE in
     join)
         echo "Rejoindre une blockchain existante avec enode: $ENODE_URL" 
 
-		cp $AUTH_FILE "./data-node/Node-$NUM_DIR/data/auth.toml"
+		    cp $AUTH_FILE "./data-node/Node-$NUM_DIR/data/auth.toml"
 
         sleep 2
 
