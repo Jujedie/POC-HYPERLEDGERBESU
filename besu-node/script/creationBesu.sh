@@ -64,7 +64,6 @@ do
 	mkdir -p ./data-node/Node-$i/data
 	mv networkFiles/keys/$key/* ./data-node/Node-$i
 
-	sh ./script/creationIdentifiants.sh $i
 	i=$(( i + 1 ))
 done
 
