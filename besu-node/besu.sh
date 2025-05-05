@@ -125,9 +125,9 @@ case $MODE in
 
         echo "Création d'une nouvelle blockchain..."
 
-        cp $AUTH_FILE "./data-node/Node-$NUM_DIR/data/auth.toml"
-
         sh ./script/creationBesu.sh
+        
+        cp $AUTH_FILE "./data-node/Node-$NUM_DIR/data/auth.toml"
 
         docker compose down -v
         docker compose up -d create-qbft
