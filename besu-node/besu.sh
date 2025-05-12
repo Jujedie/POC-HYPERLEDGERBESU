@@ -179,3 +179,9 @@ if ! docker compose ps -a | grep -q grafana; then
   docker compose up -d grafana
   docker compose start grafana
 fi
+
+if ! docker compose ps -a | grep -q node-exporter; then
+  echo "Creation et démarrage de Node Exporter..."
+  docker compose up -d node-exporter
+  docker compose start node-exporter
+fi

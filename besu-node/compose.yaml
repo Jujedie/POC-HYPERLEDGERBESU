@@ -143,3 +143,12 @@ services:
       - create-qbft
       - join-node
       - start-node
+  
+  node-exporter:
+    image: quay.io/prometheus/node-exporter:latest
+    container_name: node_exporter
+    command:
+      - '--path.rootfs=/host'
+      - '--collector.systemd'
+      - '--collector.processes'
+    network_mode: "host"
