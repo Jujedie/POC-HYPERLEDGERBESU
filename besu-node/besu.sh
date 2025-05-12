@@ -126,8 +126,6 @@ case $MODE in
         echo "Création d'une nouvelle blockchain..."
 
         sh ./script/creationBesu.sh
-        
-        cp $AUTH_FILE "./data-node/Node-$NUM_DIR/data/auth.toml"
 
         docker compose down -v
         docker compose up -d create-qbft
@@ -138,7 +136,10 @@ case $MODE in
     join)
         echo "Rejoindre une blockchain existante avec enode: $ENODE_URL" 
 
-		    cp $AUTH_FILE "./data-node/Node-$NUM_DIR/data/auth.toml"
+		    cd ./data-node/Node-$i/data
+	      openssl genrsa -out jwt-private-key.pem 2048
+      	openssl rsa -pubout -in jwt-private-key.pem -pubout -out jwt-public-key.pem
+      	cd ../../..
 
         sleep 2
 
