@@ -64,6 +64,11 @@ do
 	mkdir -p ./data-node/Node-$i/data
 	mv networkFiles/keys/$key/* ./data-node/Node-$i
 
+	cd ./data-node/Node-$i/data
+	openssl genrsa -out jwt-private-key.pem 2048
+	openssl rsa -pubout -in jwt-private-key.pem -pubout -out jwt-public-key.pem
+	cd ../../..
+
 	i=$(( i + 1 ))
 done
 
