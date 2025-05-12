@@ -4,3 +4,4 @@
 besu-node/config/*
 besu-node/data-node/*
 besu-node/.env
+besu-node/certs/*

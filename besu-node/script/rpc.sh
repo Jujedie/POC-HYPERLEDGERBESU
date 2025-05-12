@@ -16,12 +16,6 @@ if [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]]; then
   usage
 fi
 
-# Ensure at least 2 arguments (login, method) are provided
-if [[ $# -lt 2 ]]; then
-  echo "Error: Missing arguments."
-  usage
-fi
-
 # Parse optional IP and RPC port
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -38,6 +32,12 @@ while [[ $# -gt 0 ]]; do
       ;;
   esac
 done
+
+# Ensure at least 2 arguments (login, method) are provided
+if [[ $# -lt 2 ]]; then
+  echo "Error: Missing arguments."
+  usage
+fi
 
 # Set default values for IP and RPC port if not provided
 if [[ -z "$IP_EXTERNE" ]]; then
@@ -60,7 +60,7 @@ read -s PASSWORD
 echo ""
 
 # Fetch the authentication token using the provided username and password
-TOKEN=$(curl -X POST --data '{"username":"'"$1"'","password":"'"$PASSWORD"'"}' http://$IP_EXTERNE:$RPC_PORT/login 2>/dev/null | jq .token 2>/dev/null | tr -d '"')
+TOKEN=$(curl -k -X POST --data '{"username":"'"$1"'","password":"'"$PASSWORD"'"}' https://$IP_EXTERNE:$RPC_PORT/login 2>/dev/null | jq .token 2>/dev/null | tr -d '"')
 
 # Check if token retrieval was successful
 if [[ -z "$TOKEN" ]]; then
@@ -73,5 +73,5 @@ params=("${@:3}")
 params_str=$(IFS=,; echo "[${params[*]}]")
 
 # Call the JSON-RPC method and display the result
-curl -X POST -H "Authorization: Bearer $TOKEN" --data '{"jsonrpc":"2.0","method":"'"$2"'","params":'"$params_str"',"id":1}' http://$IP_EXTERNE:$RPC_PORT 2>/dev/null | jq .result
+curl -k -X POST -H "Authorization: Bearer $TOKEN" --data '{"jsonrpc":"2.0","method":"'"$2"'","params":'"$params_str"',"id":1}' https://$IP_EXTERNE:$RPC_PORT 2>/dev/null | jq .result
 
