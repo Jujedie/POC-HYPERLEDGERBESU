@@ -66,7 +66,7 @@ echo "$key_priv" > ./gen-keys/RSA_private.pem
 echo "$key_priv_2" > ./gen-keys/RSA_private_key.pem
 
 TOKEN=$(./gradlew run)
-
+TOKEN=$(echo "$TOKEN" | sed -n 's/.*RSA JWT: \([^ ]*\).*/\1/p')
 cd ../script
 
 echo "Token retrieved: $TOKEN"
@@ -82,5 +82,5 @@ params=("${@:3}")
 params_str=$(IFS=,; echo "[${params[*]}]")
 
 # Call the JSON-RPC method and display the result
-curl -k -X POST -H "Authorization: Bearer $TOKEN" --data '{"jsonrpc":"2.0","method":"'"$3"'","params":'"$params_str"',"id":1}' https://$IP_EXTERNE:$RPC_PORT 2>/dev/null | jq .result
-
+echo "curl -k -X POST -H \"Authorization: Bearer [TOKEN]\" --data '{\"jsonrpc\":\"2.0\",\"method\":\"$2\",\"params\":$params_str,\"id\":1}' https://$IP_EXTERNE:$RPC_PORT"
+curl -k -X POST -H "Authorization: Bearer $TOKEN" --data '{"jsonrpc":"2.0","method":"'"$2"'","params":'"$params_str"',"id":1}' https://$IP_EXTERNE:$RPC_PORT 2>/dev/null
