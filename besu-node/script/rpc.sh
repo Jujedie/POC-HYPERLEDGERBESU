@@ -82,5 +82,5 @@ params=("${@:3}")
 params_str=$(IFS=,; echo "[${params[*]}]")
 
 # Call the JSON-RPC method and display the result
-echo "curl -k -X POST -H \"Authorization: Bearer [TOKEN]\" --data '{\"jsonrpc\":\"2.0\",\"method\":\"$2\",\"params\":$params_str,\"id\":1}' https://$IP_EXTERNE:$RPC_PORT"
-curl -k -X POST -H "Authorization: Bearer $TOKEN" --data '{"jsonrpc":"2.0","method":"'"$2"'","params":'"$params_str"',"id":1}' https://$IP_EXTERNE:$RPC_PORT 2>/dev/null
+echo "curl -k -X POST -H \"Authorization: Bearer $TOKEN\" --data '{\"jsonrpc\":\"2.0\",\"method\":\"$2\",\"params\":$params_str,\"id\":1}' https://$IP_EXTERNE:$RPC_PORT"
+curl -k -X POST -H "Authorization: Bearer $TOKEN" --data '{"jsonrpc":"2.0","method":"'"$2"'","params":'"$params_str"',"id":1}' https://$IP_EXTERNE:$RPC_PORT -H "Content-Type: application/json" 2>/dev/null
