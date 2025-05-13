@@ -2,12 +2,12 @@
 
 # Function to display usage/help
 usage() {
-  echo "Usage: $0 [--ip <ip>] [--rpc-port <port>] <login> <method> [params] "
-  echo "  <login>    - The username for authentication"
-  echo "  <method>   - The JSON-RPC method to call"
-  echo "  [params]   - Optional parameters for the JSON-RPC method (can be passed as space-separated values)"
-  echo "  [--ip]     - Optional IP address (default from .env if not provided)"
-  echo "  [--rpc-port] - Optional RPC port (default from .env if not provided)"
+  echo "Usage: $0 [--ip <ip>] [--rpc-port <port>] <num_node> <method> [params] "
+  echo " <num_node>    - The node number (e.g., 1, 2, 3, etc.)"
+  echo " <method>      - The JSON-RPC method to call"
+  echo " [params]      - Optional parameters for the JSON-RPC method (can be passed as space-separated values)"
+  echo " [--ip]        - Optional IP address (default from .env if not provided)"
+  echo " [--rpc-port]  - Optional RPC port (default from .env if not provided)"
   exit 0
 }
 
@@ -54,13 +54,22 @@ if [[ -z "$IP_EXTERNE" ]] || [[ -z "$RPC_PORT" ]]; then
   exit 1
 fi
 
-# Prompt for password
-echo -n "Password: "
-read -s PASSWORD
-echo ""
+key_pub=$(cat ../data-node/Node-$1/data/RSA_public.pem)
+key_priv=$(cat ../data-node/Node-$1/data/RSA_private.pem)
+key_priv_2=$(cat ../data-node/Node-$1/data/RSA_private_key.pem)
 
-# Fetch the authentication token using the provided username and password
-TOKEN=$(curl -k -X POST --data '{"username":"'"$1"'","password":"'"$PASSWORD"'"}' https://$IP_EXTERNE:$RPC_PORT/login 2>/dev/null | jq .token 2>/dev/null | tr -d '"')
+cd ../jwt
+
+echo "Generating JWT token..."
+echo "$key_pub" > ./gen-keys/RSA_public.pem
+echo "$key_priv" > ./gen-keys/RSA_private.pem
+echo "$key_priv_2" > ./gen-keys/RSA_private_key.pem
+
+TOKEN=$(./gradlew run)
+
+cd ../script
+
+echo "Token retrieved: $TOKEN"
 
 # Check if token retrieval was successful
 if [[ -z "$TOKEN" ]]; then
@@ -73,5 +82,5 @@ params=("${@:3}")
 params_str=$(IFS=,; echo "[${params[*]}]")
 
 # Call the JSON-RPC method and display the result
-curl -k -X POST -H "Authorization: Bearer $TOKEN" --data '{"jsonrpc":"2.0","method":"'"$2"'","params":'"$params_str"',"id":1}' https://$IP_EXTERNE:$RPC_PORT 2>/dev/null | jq .result
+curl -k -X POST -H "Authorization: Bearer $TOKEN" --data '{"jsonrpc":"2.0","method":"'"$3"'","params":'"$params_str"',"id":1}' https://$IP_EXTERNE:$RPC_PORT 2>/dev/null | jq .result
 
