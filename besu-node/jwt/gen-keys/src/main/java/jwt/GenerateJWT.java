@@ -22,7 +22,7 @@ public class GenerateJWT {
     JsonObject jsonTokenPayload = new JsonObject()
         .put("permissions", "*:*")
         .put("privacyPublicKey", "2UKH3VJThkOoKskrLFpwoxCnnRARyobV1bEdgseFHTs=")
-        .put("exp", "1600899999002");
+        .put("exp", System.currentTimeMillis() / 1000 + 3600+"");
 
     String privateRSAKey = Files.readString(Path.of("RSA_private_key.pem"));
     String publicRSAKey = Files.readString(Path.of("RSA_public.pem"));
