@@ -7,10 +7,6 @@ wget https://download.bell-sw.com/java/21.0.7+9/bellsoft-jdk21.0.7+9-linux-aarch
 sudo dpkg --install bellsoft-jdk21*-linux-aarch64.deb
 rm bellsoft-jdk21*-linux-aarch64.deb
 
-# Installation de Gradle
-
-sudo apt install gradle
-
 # Installation de besu 
 wget https://github.com/hyperledger/besu/releases/download/25.4.1/besu-25.4.1.tar.gz 
 sudo tar -xvf besu-25.4.1.tar.gz -C /opt 
