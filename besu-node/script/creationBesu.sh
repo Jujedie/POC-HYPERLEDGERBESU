@@ -65,17 +65,9 @@ do
 	mv networkFiles/keys/$key/* ./data-node/Node-$i
 
 	cd ./data-node/Node-$i/data
-	openssl genrsa -out jwt-private-key.pem 2048
-	openssl rsa -pubout -in jwt-private-key.pem -pubout -out jwt-public-key.pem
-	
-	jwt.json=$(cat <<EOF
-{
-  "permissions": ["*:*"],
-  "privacyPublicKey": "$(cat jwt-public-key.pem | tr -d '\n')",=",
-  "exp": 1600899999002
-}
-EOF
-)
+	openssl genrsa -out RSA_private.pem 2048
+	openssl pkcs8 -topk8 -inform PEM -in RSA_private.pem -out RSA_private_key.pem -nocrypt
+	openssl rsa -in RSA_private.pem -outform PEM -pubout -out RSA_public.pem
 	cd ../../..
 
 	i=$(( i + 1 ))
