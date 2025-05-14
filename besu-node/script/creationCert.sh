@@ -4,7 +4,8 @@ CERT_REQ="$CERT_DIR/cert.csr"
 CERT="$CERT_DIR/cert.crt"
 KEYSTORE="$CERT_DIR/keystore.pfx"
 KNOWNCLIENTS="$CERT_DIR/knownClients"
-PASSWORD="Salut"
+echo -n "Password: "
+read -s PASSWORD
 
 mkdir -p "$CERT_DIR"
 
