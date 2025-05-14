@@ -54,19 +54,30 @@ if [[ -z "$IP_EXTERNE" ]] || [[ -z "$RPC_PORT" ]]; then
   exit 1
 fi
 
-key_pub=$(cat ../data-node/Node-$1/data/RSA_public.pem)
-key_priv=$(cat ../data-node/Node-$1/data/RSA_private.pem)
-key_priv_2=$(cat ../data-node/Node-$1/data/RSA_private_key.pem)
+rsa_key_pub=$(cat ../data-node/Node-$1/data/RSA_public.pem)
+rsa_key_priv=$(cat ../data-node/Node-$1/data/RSA_private.pem)
+rsa_key_priv_2=$(cat ../data-node/Node-$1/data/RSA_private_key.pem)
+
+cat ../data-node/Node-$1/data/RSA_public.pem
 
 cd ../jwt
 
 echo "Generating JWT token..."
-echo "$key_pub" > ./gen-keys/RSA_public.pem
-echo "$key_priv" > ./gen-keys/RSA_private.pem
-echo "$key_priv_2" > ./gen-keys/RSA_private_key.pem
 
-TOKEN=$(./gradlew run)
-TOKEN=$(echo "$TOKEN" | sed -n 's/.*RSA JWT: \([^ ]*\).*/\1/p')
+cat ./gen-keys/RSA_public.pem
+
+rm ./gen-keys/RSA_public.pem
+rm ./gen-keys/RSA_private_key.pem
+
+echo "$rsa_key_pub" > ./gen-keys/RSA_public.pem
+echo "$rsa_key_priv_2" > ./gen-keys/RSA_private_key.pem
+
+cat ./gen-keys/RSA_public.pem
+
+TOKEN=$(./gradlew run )
+echo "Token generated successfully : $TOKEN"
+TOKEN=$(echo $TOKEN | sed -n 's/.*RSA JWT: \([^ ]*\).*/\1/p')
+
 cd ../script
 
 echo "Token retrieved: $TOKEN"
@@ -82,5 +93,4 @@ params=("${@:3}")
 params_str=$(IFS=,; echo "[${params[*]}]")
 
 # Call the JSON-RPC method and display the result
-echo "curl -k -X POST -H \"Authorization: Bearer $TOKEN\" --data '{\"jsonrpc\":\"2.0\",\"method\":\"$2\",\"params\":$params_str,\"id\":1}' https://$IP_EXTERNE:$RPC_PORT"
 curl -k -X POST -H "Authorization: Bearer $TOKEN" --data '{"jsonrpc":"2.0","method":"'"$2"'","params":'"$params_str"',"id":1}' https://$IP_EXTERNE:$RPC_PORT -H "Content-Type: application/json" 2>/dev/null
