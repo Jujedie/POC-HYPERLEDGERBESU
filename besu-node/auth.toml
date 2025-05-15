@@ -1,6 +1,0 @@
-[Users.Node]
-password = "$2a$10$DMegoZQ.fOpMNXuddPh05OYAPSr.pKnxnlmaWH5MLWfjI74nRAB4i"
-permissions = ["admin:nodeInfo","admin:peers","eth:*","net:*","qbft:getPendingVotes","qbft:getValidatorsByBlockNumber"]
-[Users.Node-Validator]
-password = "$2a$10$zVLz6wTmZGHU3kPigvYkTOhueE.4HMbjeX1HDqBXbHiPuaSaXhJka"
-permissions = ["admin:*","eth:*","net:*","qbft:*"]
