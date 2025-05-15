@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", function () {
 	if (
 		sessionStorage.getItem("id") !== null &&
 		sessionStorage.getItem("mdp") !== null &&
-		sessionStorage.getItem("pointDentree") !== null
+		sessionStorage.getItem("ip") !== null
 	) {
 		const error = Document.getElementById("error");
 		if (error) {
@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function fetchToken() {
-	const url = "http://" + sessionStorage.getItem("pointDentree");
+	const url = "http://" + sessionStorage.getItem("ip");
 
 	const loginBody = {
 		id: sessionStorage.getItem("id"),
@@ -71,7 +71,7 @@ function getNodes() {
 }
 
 function admin_peers() {
-	const url = "http://" + sessionStorage.getItem("pointDentree");
+	const url = "http://" + sessionStorage.getItem("ip");
 
 	const proposeBody = {
 		jsonrpc: "2.0",
@@ -102,7 +102,7 @@ function admin_peers() {
 }
 
 function admin_nodeInfo() {
-	const url = "http://" + sessionStorage.getItem("pointDentree");
+	const url = "http://" + sessionStorage.getItem("ip");
 
 	const proposeBody = {
 		jsonrpc: "2.0",
