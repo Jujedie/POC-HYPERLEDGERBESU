@@ -64,14 +64,6 @@ do
 	mkdir -p ./data-node/Node-$i/data
 	mv networkFiles/keys/$key/* ./data-node/Node-$i
 
-	cd ./data-node/Node-$i/data
-	
-	openssl genrsa -out RSA_private.pem 2048
-	openssl pkcs8 -topk8 -inform PEM -in RSA_private.pem -out RSA_private_key.pem -nocrypt
-	openssl rsa -in RSA_private.pem -outform PEM -pubout -out RSA_public.pem
-
-	cd ../../..
-
 	i=$(( i + 1 ))
 done
 
