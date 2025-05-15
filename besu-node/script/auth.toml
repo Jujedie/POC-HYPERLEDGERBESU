@@ -1,0 +1,3 @@
+[Users.nom]
+password = "$2a$10$AfrPYxFHnKLTu0lBTKDcCuiEb3Z.oYuhP0ugdEXBjeRod0dGfXv3i"
+permissions = ["admin:addPeer","admin:changeLogLevel","admin:generateLogBloomCache","admin:logsRemoveCache","admin:logsRepairCache","admin:nodeInfo","admin:peers","admin:removePeer","debug:*","eth:*","net:*","plugins:*","trace:*","txpool:*","web3:*","qbft:*"]
