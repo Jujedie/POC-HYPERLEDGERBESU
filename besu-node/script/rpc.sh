@@ -33,8 +33,8 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-# Ensure at least 3 arguments (login, method) are provided
-if [[ $# -lt 3 ]]; then
+# Ensure at least 2 arguments (login, method) are provided
+if [[ $# -lt 2 ]]; then
   echo "Error: Missing arguments."
   usage
 fi
