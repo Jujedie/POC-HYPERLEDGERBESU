@@ -11,7 +11,7 @@ show_help() {
   echo "  --rpc-port <PORT>                       Port RPC (défaut: 8545)"
   echo "  --p2p-port <PORT>                       Port P2P (défaut: 30303)"
   echo "  --metric-port <PORT>                    Port Metric (défaut: 9545)"
-  echo "  --auth <ID> <MDP>                       Authentification (ID et mot de passe)"
+  echo "  --auth-file <FILE>                      Fichier d'authentification"
   echo "  --nombre-noeuds-max <NOMBRE>            Nombre maximum de nœuds (défaut: 25)"
   echo "  --help                                  Afficher cette aide"
 }
@@ -26,9 +26,8 @@ P2P_PORT=30303
 METRIC_PORT=9545
 GRAF_PORT=3000
 PROM_PORT=9090
-AUTH_ID="Node"
-AUTH_MDP="Node"
 NB_NODES_MAX=25
+AUTH_FILE="auth.toml"
 
 # Analyse des arguments
 while [[ $# -gt 0 ]]; do
@@ -66,9 +65,8 @@ while [[ $# -gt 0 ]]; do
       shift 2
       ;;
     --auth-file)
-      AUTH_ID="$2"
-      AUTH_MDP="$3"
-      shift 3
+	  AUTH_FILE="$2"
+      shift 2
       ;;
     --nombre-noeuds-max)
       NB_NODES_MAX="$2"
@@ -134,8 +132,8 @@ case $MODE in
         echo "Création d'une nouvelle blockchain..."
 
         sh ./script/creationBesu.sh
-
-        sh ./script/creationIdentifiants.sh "./data-node/Node-$NUM_DIR/data/auth.toml" $AUTH_ID $AUTH_MDP
+		
+		cp $AUTH_FILE "./data-node/Node-$NUM_DIR/data/auth.toml"
 
         docker compose down -v
         docker compose up -d create-qbft
@@ -146,7 +144,7 @@ case $MODE in
     join)
         echo "Rejoindre une blockchain existante avec enode: $ENODE_URL" 
 
-		    sh ./script/creationIdentifiants.sh "./data-node/Node-$NUM_DIR/data/auth.toml" $AUTH_ID $AUTH_MDP
+		cp $AUTH_FILE "./data-node/Node-$NUM_DIR/data/auth.toml"
 
         sleep 2
 
