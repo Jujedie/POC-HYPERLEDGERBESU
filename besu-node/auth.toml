@@ -1,3 +1,3 @@
 [Users.Node]
 password = "$2a$10$C/aZlBgaaqOncUss8TtH3.fF9nKnbEKrsfseEsL8sdILve5HPOuoy"
-permissions = ["admin:nodeInfo","admin:peers","eth:*","net:*"]
+permissions = ["*:*"]
