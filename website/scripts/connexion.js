@@ -3,10 +3,6 @@ document.getElementById('formConnect').addEventListener('submit', async function
 	const mdp = document.getElementById("MDP").value;
 	const ip  = document.getElementById("IP").value;
 
-	console.log("ID:", id);
-	console.log("MDP:", mdp);
-	console.log("IP:", ip);
-
 	sessionStorage.setItem("id", id);
 	sessionStorage.setItem("mdp", mdp);
 	sessionStorage.setItem("ip", ip);
@@ -24,10 +20,10 @@ document.getElementById('formConnect').addEventListener('submit', async function
 });
 
 async function fetchToken() {
-	const url = "http://" + sessionStorage.getItem("ip");
+	const url = "https://" + sessionStorage.getItem("ip");
 
 	const loginBody = {
-		id: sessionStorage.getItem("id"),
+		username: sessionStorage.getItem("id"),
 		password: sessionStorage.getItem("mdp"),
 	};
 
@@ -39,10 +35,14 @@ async function fetchToken() {
 			},
 			body: JSON.stringify(loginBody),
 		});
+
+
 		if (!response.ok) {
 			throw new Error(`HTTP error! status: ${response.status}`);
 		}
+
 		const data = await response.json();
+
 		if (data.token) {
 			console.log("Token fetched:", data.token);
 			sessionStorage.setItem("token", data.token);
