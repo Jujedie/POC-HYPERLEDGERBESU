@@ -1,5 +1,8 @@
 import "./App.css";
 import { useState } from "react";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import Connexion from "./Connexion";
+import DashboardNode from "./DashboardNode";	
 
 const logLevel = ["OFF","FATAL","ERROR","WARN","INFO","DEBUG","TRACE","ALL"];
 const blockParameter = ["latest","earliest","pending","finalized","safe"];
@@ -350,73 +353,84 @@ function App() {
 		}
 
 	}
-
+	
 	return (
-		<div className="App">
-		<h1>Besu API</h1>
+		<Router>
+			<nav>
+				<Link to="/dashboardnode">Accueil</Link> | <Link to="/connexion">Connexion</Link>
+			</nav>
+			<Routes>
+				<Route path="/" element={
+					<div>
+						<h1>Besu API</h1>
 
-		<table>
-		<tbody>
-		<tr>
-		<th>Identifiant</th>
-		<th>
-		<input type="text" id="inputID" placeholder="Entrez votre identifiant"/>
-		</th>
-		</tr>
-		<tr>
-		<th>Mot de passe</th>
-		<th>
-		<input type="password" id="inputPassword" placeholder="Entrez votre mot de passe"/>
-		</th>
-		</tr>
-		<tr>
-		<th>Adresse IP d'un noeud <br /> et son port RPC</th>
-		<th>
-		<input type="text" id="inputURL" placeholder="https://IP:portRPC"/>
-		</th>
-		</tr>
-		<tr>
-		<th>Méthode</th>
-		<th>
-		<select 
-		id="inputMethod" 
-		value={selectedMethod} 
-		onChange={(e) => {
-			setSelectedMethod(e.target.value);
-			setArgs({});
-		}}
-		>
-		<option value="">-- Sélectionnez une méthode --</option>
-		{rpcMethods.map((method) => (
-			<option key={method.name} value={method.name}>
-			{method.name}
-			</option>
-		))}
-		</select>
-		</th>
-		</tr>
-		{selectedMethodDef?.params?.map((param) => (
-			<tr key={param.name}>
-			<th>{param.name}</th>
-			<th>
-			<input
-			type="text"
-			placeholder={param.description}
-			value={args[param.name] || ""}
-			onChange={(e) =>
-				setArgs({ ...args, [param.name]: e.target.value })
-			}
-			/>
-			</th>
-			</tr>
-		))}
-		</tbody>
-		</table>
-		<button className="validation-button" id="rpc-request" onClick={sendRPC}>
-		Envoyer la requête
-		</button>
-		<pre>{result}</pre>
-		</div>
+						<table>
+						<tbody>
+						<tr>
+						<th>Identifiant</th>
+						<th>
+						<input type="text" id="inputID" placeholder="Entrez votre identifiant"/>
+						</th>
+						</tr>
+						<tr>
+						<th>Mot de passe</th>
+						<th>
+						<input type="password" id="inputPassword" placeholder="Entrez votre mot de passe"/>
+						</th>
+						</tr>
+						<tr>
+						<th>Adresse IP d'un noeud <br /> et son port RPC</th>
+						<th>
+						<input type="text" id="inputURL" placeholder="https://IP:portRPC"/>
+						</th>
+						</tr>
+						<tr>
+						<th>Méthode</th>
+						<th>
+						<select 
+						id="inputMethod" 
+						value={selectedMethod} 
+						onChange={(e) => {
+							setSelectedMethod(e.target.value);
+							setArgs({});
+						}}
+						>
+						<option value="">-- Sélectionnez une méthode --</option>
+						{rpcMethods.map((method) => (
+							<option key={method.name} value={method.name}>
+							{method.name}
+							</option>
+						))}
+						</select>
+						</th>
+						</tr>
+						{selectedMethodDef?.params?.map((param) => (
+							<tr key={param.name}>
+							<th>{param.name}</th>
+							<th>
+							<input
+							type="text"
+							placeholder={param.description}
+							value={args[param.name] || ""}
+							onChange={(e) =>
+								setArgs({ ...args, [param.name]: e.target.value })
+							}
+							/>
+							</th>
+							</tr>
+						))}
+						</tbody>
+						</table>
+						<button className="validation-button" id="rpc-request" onClick={sendRPC}>
+						Envoyer la requête
+						</button>
+						<pre>{result}</pre>
+					</div>
+				} />
+				<Route path="/connexion" element={<Connexion />} />
+				<Route path="/dashboardnode" element={<DashboardNode />} />
+			</Routes>
+		</Router>
 	);
 }
 
