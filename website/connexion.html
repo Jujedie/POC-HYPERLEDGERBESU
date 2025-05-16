@@ -3,10 +3,9 @@
 	<head>
 		<meta charset="utf-8">
 		<title>Page de connexion</title>
-		<meta name="description" content="">
+		<meta name="description" content="La page de connexion">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-		<script src="./scripts/connexion.js"></script>
 	</head>
 	<body>
 		<header>
@@ -30,20 +29,21 @@
 			<h1>Veuillez vous connecter</h1>
 
 			<form id="formConnect" class="form col-4 card">
-				<div id="MDP" class="form-group">
+				<div class="form-group">
 					<label for="login">Identifiant</label>
-					<input type="text" id="login" name="login" placeholder="Identifiant" required>
+					<input type="text" id="ID" name="login" placeholder="Identifiant" required>
 				</div>
-				<div id="MDP" class="form-group">
+				<div class="form-group">
 					<label for="password">Mot de passe</label>
-					<input type="password" id="password" name="password" placeholder="Mot de passe" required>
+					<input type="password" id="MDP" name="password" placeholder="Mot de passe" required>
 				</div>
-				<div id="IP" class="form-group">
-					<label for="text">Adresse de connexion à la blockchain</label>
-					<input type="password" id="passwordConfirm" name="passwordConfirm" placeholder="IP:PORT_RPC" required>
+				<div class="form-group">
+					<label for="IP:RPC_PORT">Adresse de connexion à la blockchain</label>
+					<input type="text" id="IP" name="IP:RPC_PORT" placeholder="IP:PORT_RPC" required>
 				</div>
-				<button id="btnConnect" class="btn btn-primary" type="button">Se connecter</button>
+				<button id="btnSubmit" class="btn btn-primary" type="submit">Se connecter</button>
 			</form>
 		</div>
+		<script src="./scripts/connexion.js"></script>
 	</body>
 </html>
