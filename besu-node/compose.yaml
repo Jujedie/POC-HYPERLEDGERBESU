@@ -71,7 +71,7 @@ services:
     volumes:
       - ./config:/opt/besu/config
       - ./data-node:/opt/besu/data
-    
+      - ./certs:/etc/ssl/private
     ports:
       - ${RPC_PORT}:${RPC_PORT}
       - ${P2P_PORT}:${P2P_PORT}
@@ -110,7 +110,7 @@ services:
     volumes:
       - ./config:/opt/besu/config
       - ./data-node:/opt/besu/data
-    
+      - ./certs:/etc/ssl/private
     ports:
       - ${RPC_PORT}:${RPC_PORT}
       - ${P2P_PORT}:${P2P_PORT}

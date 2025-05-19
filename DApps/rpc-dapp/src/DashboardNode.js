@@ -108,11 +108,10 @@ function DashboardNode() {
 		})
 			.then(response => response.json())
 			.then(data => {
-				
 				const row = document.createElement("tr");
+				row.classList.add("selectedNode");
 				row.innerHTML = `<td>${data.result.enode}</td><td>${data.result.id}</td>`;
 				nodesList.appendChild(row);
-				
 			})
 			.catch(error => console.error('Error fetching nodes:', error));
 	}

@@ -144,7 +144,7 @@ case $MODE in
     join)
         echo "Rejoindre une blockchain existante avec enode: $ENODE_URL" 
 
-		cp $AUTH_FILE "./data-node/Node-$NUM_DIR/data/auth.toml"
+		    cp $AUTH_FILE "./data-node/Node-$NUM_DIR/data/auth.toml"
 
         sleep 2
 
