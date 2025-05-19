@@ -3,7 +3,6 @@ import { jwtDecode } from "jwt-decode";
 
 
 function DashboardNode() {
-
 	async function connectRPC() {
 
 		const loginBody = {
@@ -25,21 +24,18 @@ function DashboardNode() {
 			const token = loginData.token;
 			if (!token) {
 				console.log("Échec de l'authentification.");
-				document.getElementById("error").innerHTML = "Échec de l'authentification.";
-				document.getElementById("error").style.color = "red";
+				message("Échec de l'authentification.", "red");
 				return;
 			} else {
 				sessionStorage.setItem("token", token);
 
 				console.log("Token récupéré:", token);
-				document.getElementById("error").innerHTML = "";
-				document.getElementById("error").style.color = "green";
+				message("", "green");
 			}
 		} catch (error) {
 			console.error(error);
 			console.log("Erreur lors de la requête.");
-			document.getElementById("error").innerHTML = "Erreur lors de la requête.";
-			document.getElementById("error").style.color = "red";
+			message("Erreur lors de la requête.", "red");
 		}
 
 	}
@@ -60,60 +56,67 @@ function DashboardNode() {
 		const nodesList = document.getElementById("lstNodes");
 		nodesList.innerHTML = "";
 
-		tokenValidation();
-		const url = sessionStorage.getItem("url");
-		const token = sessionStorage.getItem("token");
+		const resNode = sendRPC("admin_nodeInfo");
+		const resPeers = sendRPC("admin_peers");
 
-		let rpcBody = {
-			jsonrpc: "2.0",
-			method: "admin_peers",
-			params: [],
-			id: 1,
+		// Node
+		const row = document.createElement("tr");
+		row.classList.add("selectedNode");
+		row.innerHTML = `<td>${resNode.enode}</td><td>${resNode.id}</td>`;
+		nodesList.appendChild(row);
+
+		// Peers
+		resPeers.forEach(node => {
+			const row = document.createElement("tr");
+			row.innerHTML = `<td>${node.enode}</td><td>${node.id}</td>`;
+			nodesList.appendChild(row);
+
+		});
+	}
+
+	function message(text, color) {
+		document.getElementById("error").innerHTML = text;
+		document.getElementById("error").style.color = color;
+
+
+	}
+
+	async function sendRPC(method, paramList) {
+		try {
+			tokenValidation();
+
+			const url = sessionStorage.getItem("url");
+			const token = sessionStorage.getItem("token");
+
+			const rpcBody = {
+				jsonrpc: "2.0",
+				method: method,
+				params: paramList,
+				id: 1,
+			}
+
+			const rpcResponse = await fetch(url, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${token}`,
+				},
+				body: JSON.stringify(rpcBody),
+			});
+
+			const rpcData = await rpcResponse.json();
+
+			if(!rpcData.result) {
+				message(rpcData.error.message, "red");
+				return ;
+			}
+
+			return rpcData.result;
+
+		} catch(error) {
+			message("Error fetching Node", "red");
+			return ;
 		}
-
-		fetch(`${url}`, {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-				"Authorization": `Bearer ${token}`,
-			},
-			body: JSON.stringify(rpcBody),
-		})
-			.then(response => response.json())
-			.then(data => {
-				 // Clear previous content
-
-				(data.result || []).forEach(node => {
-					const row = document.createElement("tr");
-					row.innerHTML = `<td>${node.enode}</td><td>${node.id}</td>`;
-					nodesList.appendChild(row);
-				});
-			})
-			.catch(error => console.error('Error fetching nodes:', error));
-		
-		rpcBody = {
-			jsonrpc: "2.0",
-			method: "admin_nodeInfo",
-			params: [],
-			id: 1,
-		}
-
-		fetch(`${url}`, {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-				"Authorization": `Bearer ${token}`,
-			},
-			body: JSON.stringify(rpcBody),
-		})
-			.then(response => response.json())
-			.then(data => {
-				const row = document.createElement("tr");
-				row.classList.add("selectedNode");
-				row.innerHTML = `<td>${data.result.enode}</td><td>${data.result.id}</td>`;
-				nodesList.appendChild(row);
-			})
-			.catch(error => console.error('Error fetching nodes:', error));
 	}
 
 
@@ -129,7 +132,5 @@ function DashboardNode() {
 		</div>
 	);
 }
-
-
 
 export default DashboardNode;
