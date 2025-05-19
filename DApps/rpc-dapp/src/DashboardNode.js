@@ -104,7 +104,7 @@ function DashboardNode() {
 			.then(data => {
 				const row = document.createElement("tr");
 				row.classList.add("selectedNode");
-				row.innerHTML = `<td>${data.result.enode}</td><td>${data.result.id}</td>`;
+				row.innerHTML = `<td>${data.result.network.localAddress}:</td><td>${data.result.id}</td>`;
 				nodesList.appendChild(row);
 			})
 			.catch(error => console.error('Error fetching nodes:', error));
