@@ -45,7 +45,13 @@ function DashboardNode() {
 	}
 
 	function tokenValidation() {
-		if (jwtDecode(sessionStorage.getItem("token")).exp < Date.now() / 1000) {
+		const token = sessionStorage.getItem("token");
+		if (!token) {
+			window.location.href = "/connexion";
+			return;
+		}
+
+		if (token.exp < Date.now() / 1000) {
 			connectRPC();
 		}
 	}
