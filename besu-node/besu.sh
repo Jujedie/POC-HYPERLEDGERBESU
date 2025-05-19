@@ -6,7 +6,7 @@ show_help() {
   echo "Options:"
   echo "  --new <REMOVE_NODES>                    Créer une nouvelle blockchain (par défaut)"
   echo "  --join <ENODE_URL>                      Rejoindre une blockchain existante"
-  echo "  --start <ENODE_URL>                     Démarrer le nœud en mode bootstrap (par défaut: true)"
+  echo "  --start <EST_BOOTNODE> <ENODE_URL>      Démarrer le nœud existant, si bootnode veuillez spécifier null comme ENODE_URL"
   echo "  --num-dir <DIR>                         Numéro du répertoire du nœud (défaut: 1)"
   echo "  --rpc-port <PORT>                       Port RPC (défaut: 8545)"
   echo "  --p2p-port <PORT>                       Port P2P (défaut: 30303)"
@@ -28,6 +28,7 @@ GRAF_PORT=3000
 PROM_PORT=9090
 NB_NODES_MAX=25
 AUTH_FILE="auth.toml"
+EST_BOOTNODE="false"
 
 # Analyse des arguments
 while [[ $# -gt 0 ]]; do
@@ -45,8 +46,9 @@ while [[ $# -gt 0 ]]; do
       ;;
     --start)
       MODE="start"
-      ENODE_URL="$2"
-      shift 2
+      EST_BOOTNODE="$2"
+      ENODE_URL="$3"
+      shift 3
       ;;
     --num-dir)
       NUM_DIR="$2"
@@ -133,7 +135,7 @@ case $MODE in
 
         sh ./script/creationBesu.sh
 		
-		cp $AUTH_FILE "./data-node/Node-$NUM_DIR/data/auth.toml"
+		    cp $AUTH_FILE "./data-node/Node-$NUM_DIR/data/auth.toml"
 
         docker compose down -v
         docker compose up -d create-qbft
@@ -156,10 +158,28 @@ case $MODE in
     start)
         echo "Démarrage du nœud existant..."
 
-        docker compose up -d start-node
-        docker compose start start-node
+        if [ -f "./data-node/Node-$NUM_DIR/key.enc" ]; then
+          openssl enc -d -aes-256-cbc -in ./data-node/Node-$NUM_DIR/key.enc -out ./data-node/Node-$NUM_DIR/key -pass pass:password
+          echo "Clé déchiffrée dans ./data-node/Node-$NUM_DIR/key"
+        else
+          echo "Fichier ./data-node/Node-$NUM_DIR/key.enc introuvable pour déchiffrement."
+        fi
 
-        sh ./script/recuperationData.sh "./data-node/Node-$NUM_DIR" "start-node-$NUM_DIR"
+        if [ "$EST_BOOTNODE" = "true" ]; then
+            echo "Démarrage en mode bootstrap..."
+            docker compose up -d start-bootnode
+            docker compose start start-bootnode
+
+            sh ./script/recuperationData.sh "./data-node/Node-$NUM_DIR" "start-bootnode-$NUM_DIR"
+        else
+            echo "Démarrage en mode normal..."
+            docker compose up -d start-node
+            docker compose start start-node
+
+            sh ./script/recuperationData.sh "./data-node/Node-$NUM_DIR" "start-node-$NUM_DIR"
+        fi
+
+        
         ;;
     *)
         echo -e "Mode non reconnu: $MODE\nFermeture des conteneurs..."
@@ -172,7 +192,9 @@ esac
 
 echo "Opération terminée."
 
-cp ./data-node/Node-$NUM_DIR/key ./data-node/Node-$NUM_DIR/data/privateKey.txt
+echo "Chiffrement de la clé..."
+openssl enc -aes-256-cbc -salt -in ./data-node/Node-$NUM_DIR/key -out ./data-node/Node-$NUM_DIR/key.enc -pass pass:password
+rm ./data-node/Node-$NUM_DIR/key
 
 if ! docker compose ps -a | grep -q prometheus; then
   echo "Creation et démarrage de Prometheus..."
