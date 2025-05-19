@@ -7,6 +7,7 @@ services:
     image: hyperledger/besu:latest
     container_name: create-qbft-${NUM_DIR}
     command: ["--data-path=data/Node-${NUM_DIR}",
+              "--node-private-key-file=data/Node-${NUM_DIR}/key",
               "--genesis-file=config/genesis.json",
               "--rpc-http-enabled",
               "--rpc-http-api=ETH,NET,QBFT,ADMIN",
@@ -45,6 +46,7 @@ services:
     image: hyperledger/besu:latest
     container_name: join-node-${NUM_DIR}
     command: ["--data-path=data/Node-${NUM_DIR}",
+              "--node-private-key-file=data/Node-${NUM_DIR}/key",
               "--genesis-file=config/genesis.json",
               "--bootnodes=\"${ENODE_URL}\"",
               "--rpc-http-enabled",
@@ -84,6 +86,7 @@ services:
     image: hyperledger/besu:latest
     container_name: start-node-${NUM_DIR}
     command: ["--data-path=data/Node-${NUM_DIR}",
+              "--node-private-key-file=data/Node-${NUM_DIR}/key",
               "--genesis-file=config/genesis.json",
               "--bootnodes=\"${ENODE_URL}\"",
               "--rpc-http-enabled",
@@ -118,6 +121,44 @@ services:
     network_mode: "host" 
     environment:
       - BESU_P2P_HOST=${IP_EXTERNE}   
+  start-bootnode:
+    image: hyperledger/besu:latest
+    container_name: start-bootnode-${NUM_DIR}
+    command: ["--data-path=data/Node-${NUM_DIR}",
+              "--node-private-key-file=data/Node-${NUM_DIR}/key",
+              "--genesis-file=config/genesis.json",
+              "--rpc-http-enabled",
+              "--rpc-http-api=ETH,NET,QBFT,ADMIN",
+              "--host-allowlist=\"*\"",
+              "--rpc-http-cors-origins=\"all\"",
+              "--rpc-http-authentication-enabled=true",
+              "--rpc-http-authentication-credentials-file=data/Node-${NUM_DIR}/data/auth.toml",
+              "--rpc-http-port=${RPC_PORT}",
+              "--rpc-http-host=0.0.0.0",
+              "--rpc-http-tls-enabled",
+              #"--rpc-http-tls-client-auth-enabled",
+              "--rpc-http-tls-keystore-file=/etc/ssl/private/keystore.pfx",
+              "--rpc-http-tls-keystore-password-file=/etc/ssl/private/keystorePassword.txt",
+              "--rpc-http-tls-known-clients-file=/etc/ssl/private/knownClients",
+              "--rpc-http-tls-cipher-suite=TLS_AES_256_GCM_SHA384",
+              "--rpc-http-tls-protocol=TLSv1.3,TLSv1.2",
+              "--p2p-port=${P2P_PORT}",
+              "--metrics-enabled=true",
+              "--metrics-port=${METRIC_PORT}",
+              "--metrics-host=0.0.0.0",
+              "--profile=ENTERPRISE"]
+
+    volumes:
+      - ./config:/opt/besu/config
+      - ./data-node:/opt/besu/data
+      - ./certs:/etc/ssl/private
+    ports:
+      - ${RPC_PORT}:${RPC_PORT}
+      - ${P2P_PORT}:${P2P_PORT}
+      - ${METRIC_PORT}:${METRIC_PORT}
+    network_mode: "host" 
+    environment:
+      - BESU_P2P_HOST=${IP_EXTERNE} 
 
   prometheus:
     image: prom/prometheus:latest
