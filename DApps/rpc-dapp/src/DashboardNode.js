@@ -68,7 +68,7 @@ function DashboardNode() {
 		// Peers
 		resPeers.forEach(node => {
 			const row = document.createElement("tr");
-			row.innerHTML = `<td>${node.enode}</td><td>${node.id}</td>`;
+			row.innerHTML = `<td>${node.network.localAddress}</td><td>${node.id}</td>`;
 			nodesList.appendChild(row);
 
 		});
