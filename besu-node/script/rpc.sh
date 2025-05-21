@@ -75,8 +75,9 @@ if [[ -z "$TOKEN" ]]; then
 fi
 
 # Collect parameters for the JSON-RPC method (starting from the 4th argument)
-params=("${@:3}")
-params_str=$(IFS=,; echo "[${params[*]}]")
+params_json=$(printf '%s\n' "${@:3}" | jq -R . | jq -s .)
 
 # Call the JSON-RPC method and display the result
-curl -k -X POST -H "Authorization: Bearer $TOKEN" --data '{"jsonrpc":"2.0","method":"'"$2"'","params":'"$params_str"',"id":1}' https://$IP_EXTERNE:$RPC_PORT 2>/dev/null | jq .result
+curl -k -X POST -H "Authorization: Bearer $TOKEN" \
+  --data '{"jsonrpc":"2.0","method":"'"$2"'","params":'"$params_json"',"id":1}' \
+  https://$IP_EXTERNE:$RPC_PORT 2>/dev/null | jq .result
