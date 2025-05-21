@@ -2,12 +2,13 @@
 
 # Function to display usage/help
 usage() {
-  echo "Usage: $0 [--ip <ip>] [--rpc-port <port>] <login> <method> [params] "
+  echo "Usage: $0 [--ip <ip>] [--rpc-port <port>] [--password <password>] <login> <method> [params] "
   echo "  <login>    - The username for authentication"
   echo "  <method>   - The JSON-RPC method to call"
   echo "  [params]   - Optional parameters for the JSON-RPC method (can be passed as space-separated values)"
   echo "  [--ip]     - Optional IP address (default from .env if not provided)"
   echo "  [--rpc-port] - Optional RPC port (default from .env if not provided)"
+  echo "  [--password] - Optional password (will prompt if not provided)"
   exit 0
 }
 
@@ -25,6 +26,10 @@ while [[ $# -gt 0 ]]; do
       ;;
     --rpc-port|-r)
       RPC_PORT="$2"
+      shift 2
+      ;;
+    --password|-p)
+      PASSWORD="$2"
       shift 2
       ;;
     *)
@@ -54,10 +59,11 @@ if [[ -z "$IP_EXTERNE" ]] || [[ -z "$RPC_PORT" ]]; then
   exit 1
 fi
 
-# Prompt for password
-echo -n "Password: "
-read -s PASSWORD
-echo ""
+if [[ -z "$PASSWORD" ]]; then
+  echo -n "Password: "
+  read -s PASSWORD
+  echo ""
+fi
 
 # Fetch the authentication token using the provided username and password
 TOKEN=$(curl -k -X POST --data '{"username":"'"$1"'","password":"'"$PASSWORD"'"}' https://$IP_EXTERNE:$RPC_PORT/login 2>/dev/null | jq .token 2>/dev/null | tr -d '"')
