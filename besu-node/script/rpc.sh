@@ -17,6 +17,7 @@ if [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]]; then
   usage
 fi
 
+PASSWORD=""
 # Parse optional IP and RPC port
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -58,7 +59,6 @@ if [[ -z "$IP_EXTERNE" ]] || [[ -z "$RPC_PORT" ]]; then
   echo "Error: IP or RPC port not set and could not be found in .env."
   exit 1
 fi
-
 if [[ -z "$PASSWORD" ]]; then
   echo -n "Password: "
   read -s PASSWORD
