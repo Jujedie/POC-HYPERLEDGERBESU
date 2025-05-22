@@ -200,7 +200,7 @@ echo "Opération terminée."
 
 echo "Chiffrement de la clé..."
 openssl enc -aes-256-cbc -salt -in ./data-node/Node-$NUM_DIR/key -out ./data-node/Node-$NUM_DIR/key.enc -pass pass:$ENCODING
-rm ./data-node/Node-$NUM_DIR/key
+shred -u ./data-node/Node-$NUM_DIR/key
 
 if ! docker compose ps -a | grep -q prometheus; then
   echo "Creation et démarrage de Prometheus..."
