@@ -50,6 +50,8 @@ for addr in "${LOCAL_ADDRESSES[@]}"; do
   echo "$ip"
 done
 
+rm -rf ../grafana/dashboards/besu-dashboard-*.json
+
 # Create the Grafana and Prometheus configuration file
 
 cat <<EOF > ../prometheus/prometheus.yml
