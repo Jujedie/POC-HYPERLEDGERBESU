@@ -10,13 +10,7 @@ scrape_configs:
       - targets: ['localhost:9100']
   - job_name: 'besu-0'
     static_configs:
-      - targets: ['172.26.3.150:9545']
-  - job_name: 'node-0'
-    static_configs:
-      - targets: ['172.26.3.150:9100']
-  - job_name: 'besu-1'
-    static_configs:
       - targets: ['172.26.6.91:9545']
-  - job_name: 'node-1'
+  - job_name: 'node-0'
     static_configs:
       - targets: ['172.26.6.91:9100']

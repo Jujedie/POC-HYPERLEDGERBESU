@@ -9,10 +9,5 @@ datasources:
   - name: 'DS_PROMETHEUS-0'
     type: prometheus
     access: proxy
-    url: http://172.26.3.150:9090
-    isDefault: false
-  - name: 'DS_PROMETHEUS-1'
-    type: prometheus
-    access: proxy
     url: http://172.26.6.91:9090
     isDefault: false
