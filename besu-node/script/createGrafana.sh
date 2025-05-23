@@ -35,18 +35,19 @@ if [[ -z "$RPC_PORT" ]]; then
   PORT=$(cat ../.env | grep RPC_PORT | cut -d '=' -f 2)
 fi
 
-RESPONSE=$(sh ./rpc.sh --ip $IP --rpc-port $PORT --password $1 $2 "admin_peers")
+RESPONSE=$(bash ./rpc.sh --ip $IP --rpc-port $PORT --password $1 $2 "admin_peers")
 echo "$RESPONSE"
 
 # Extract all remoteAddress values into a bash array
-readarray -t LOCAL_ADDRESSES < <(echo "$RESPONSE" | jq -r '.[]?.network.localAddress // empty')
+readarray -t LOCAL_ADDRESSES < <(echo "$RESPONSE" | jq -r '.[]?.network.remoteAddress // empty')
 
 # If the above does not work (because RESPONSE is a JSON object with .result), use:
 # readarray -t REMOTE_ADDRESSES < <(echo "$RESPONSE" | jq -r '.result[]?.network.remoteAddress // empty')
 
 # Print all remote addresses (for debug)
 for addr in "${LOCAL_ADDRESSES[@]}"; do
-  echo "$addr"
+  ip="${addr%%:*}"
+  echo "$ip"
 done
 
 # Create the Grafana and Prometheus configuration file
@@ -79,22 +80,26 @@ EOF
 
 ENTIER=0
 for addr in "${LOCAL_ADDRESSES[@]}"; do
+  ip="${addr%%:*}"
   echo "  - job_name: 'besu-$ENTIER'" >> ../prometheus/prometheus.yml
   echo "    static_configs:" >> ../prometheus/prometheus.yml
-  echo "      - targets: ['$addr:9545']" >> ../prometheus/prometheus.yml
+  echo "      - targets: ['$ip:9545']" >> ../prometheus/prometheus.yml
 
   echo "  - job_name: 'node-$ENTIER'" >> ../prometheus/prometheus.yml
   echo "    static_configs:" >> ../prometheus/prometheus.yml
-  echo "      - targets: ['$addr:9100']" >> ../prometheus/prometheus.yml
+  echo "      - targets: ['$ip:9100']" >> ../prometheus/prometheus.yml
 
   
-  echo "  - name: 'DS_PROMETHEUS-$ENTIER'" >> ../grafana/datasource.yml
+  echo "  - name: 'DS_PROMETHEUS-$ENTIER'" >> ../grafana/datasources.yml
   echo "    type: prometheus" >> ../grafana/datasources.yml
   echo "    access: proxy" >> ../grafana/datasources.yml
-  echo "    url: http://$addr:9090" >> ../grafana/datasources.yml
+  echo "    url: http://$ip:9090" >> ../grafana/datasources.yml
   echo "    isDefault: false" >> ../grafana/datasources.yml
 
-  sed "s/DS_PROMETHEUS/DS_PROMETHEUS-$ENTIER/g" ../grafana/besu-dashboard.json > ../grafana/besu-dashboard-$ENTIER.json
+  sed -e "s/DS_PROMETHEUS/DS_PROMETHEUS-$ENTIER/g" \
+      -e "s/\"uid\": *\"[^\"]*\"/\"uid\": \"DS_PROMETHEUS-$ENTIER\"/g" \
+      -e "s/\"title\": *\"Besu Full\"/\"title\": \"Besu Full - $ENTIER\"/g" \
+      ../grafana/dashboards/besu-dashboard.json > ../grafana/dashboards/besu-dashboard-$ENTIER.json
   
 
   ENTIER=$((ENTIER + 1))
