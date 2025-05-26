@@ -83,6 +83,7 @@ EOF
 ENTIER=0
 for addr in "${LOCAL_ADDRESSES[@]}"; do
   ip="${addr%%:*}"
+  
   echo "  - job_name: 'besu-$ENTIER'" >> ../prometheus/prometheus.yml
   echo "    static_configs:" >> ../prometheus/prometheus.yml
   echo "      - targets: ['$ip:9545']" >> ../prometheus/prometheus.yml
@@ -91,7 +92,6 @@ for addr in "${LOCAL_ADDRESSES[@]}"; do
   echo "    static_configs:" >> ../prometheus/prometheus.yml
   echo "      - targets: ['$ip:9100']" >> ../prometheus/prometheus.yml
 
-  
   echo "  - name: 'DS_PROMETHEUS-$ENTIER'" >> ../grafana/datasources.yml
   echo "    type: prometheus" >> ../grafana/datasources.yml
   echo "    access: proxy" >> ../grafana/datasources.yml
@@ -103,7 +103,6 @@ for addr in "${LOCAL_ADDRESSES[@]}"; do
       -e "s/\"title\": *\"Besu Full\"/\"title\": \"Besu Full - $ENTIER\"/g" \
       ../grafana/dashboards/besu-dashboard.json > ../grafana/dashboards/besu-dashboard-$ENTIER.json
   
-
   ENTIER=$((ENTIER + 1))
 done
 
