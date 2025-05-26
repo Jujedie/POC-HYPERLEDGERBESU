@@ -6,8 +6,3 @@ datasources:
     access: proxy
     url: http://localhost:9090
     isDefault: true
-  - name: 'DS_PROMETHEUS-0'
-    type: prometheus
-    access: proxy
-    url: http://172.26.6.91:9090
-    isDefault: false
