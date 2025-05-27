@@ -69,7 +69,7 @@ while [[ $# -gt 0 ]]; do
       shift 2
       ;;
     --auth-file)
-	  AUTH_FILE="$2"
+	    AUTH_FILE="$2"
       shift 2
       ;;
     --priv-key-encoding)
