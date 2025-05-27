@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 ALL_TYPES="admin debug eth miner net plugins trace txpool web3 qbft"
 
 get_methods() {
@@ -15,8 +14,7 @@ get_methods() {
 		trace) echo "block call callMany filter get rawTransaction replayBlockTransactions transaction" ;;
 		txpool) echo "besuPendingTransactions besuStatistics besuTransactions" ;;
 		web3) echo "clientVersion sha3" ;;
-		qbft) echo "getPendingVotes getValidatorsByBlockNumber" ;;
-		*) echo "" ;;
+		qbft) echo "getPendingVotes getValidatorsByBlockNumber" ;; *) echo "" ;;
 	esac
 }
 
@@ -30,13 +28,14 @@ cli() {
 	done
 
 	echo
-	read -p "Entrez les numéros des types séparés par des espaces (ex: 1 3 5): " type_indices
+	read -p "Entrez les numéros des types séparés par des espaces (ex: 1 3 5 ou *): " type_indices
 
 	selected_types=""
 	for idx in $type_indices; do
 		t=$(echo $ALL_TYPES | cut -d' ' -f$idx)
 		selected_types="$selected_types $t"
 	done
+	echo "  *) Toutes les méthodes (* pour tout)"
 	for type in $selected_types; do
 		echo
 		echo "Méthodes disponibles pour le type '$type' :"

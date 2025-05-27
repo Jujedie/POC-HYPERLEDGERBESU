@@ -1,6 +1,7 @@
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from "react-router-dom";
 import DashboardNode from "./DashboardNode";
+import { generateToken } from "./rpcUtils";
 
 function Connexion() {
 	const navigate = useNavigate();
@@ -10,48 +11,15 @@ function Connexion() {
 		const password = document.getElementById("inputPassword").value;
 		const url = document.getElementById("inputURL").value;
 
-		const loginBody = {
-			username: username,
-			password: password,
-		};
+		sessionStorage.setItem("username", username);
+		sessionStorage.setItem("password", password);
+		sessionStorage.setItem("url", url);
 
-		try {
-			// Authentification
-			const loginResponse = await fetch(`${url}/login`, {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify(loginBody),
-			});
+		await generateToken(username, password, url);
 
-			const loginData = await loginResponse.json();
-			const token = loginData.token;
-			if (!token) {
-				console.log("Échec de l'authentification.");
-				document.getElementById("error").innerHTML = "Échec de l'authentification.";
-				document.getElementById("error").style.color = "red";
-				return;
-			} else {
-				sessionStorage.setItem("username", username);
-				sessionStorage.setItem("password", password);
-				sessionStorage.setItem("url", url);
-				sessionStorage.setItem("token", token);
-				
-				console.log("Token récupéré:", token);
-				document.getElementById("error").innerHTML = "";
-				document.getElementById("error").style.color = "green";
-
-				// Redirection vers le Dashboard
-				navigate("/dashboardnode"); // <-- tout en minuscules
-			}
-		} catch (error) {
-			console.error(error);
-			console.log("Erreur lors de la requête.");
-			document.getElementById("error").innerHTML = "Erreur lors de la requête.";
-			document.getElementById("error").style.color = "red";
+		if(sessionStorage.getItem("token")) {
+			navigate("/dashboardnode");
 		}
-
 	}
 
 	return (
