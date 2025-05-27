@@ -13,6 +13,7 @@ show_help() {
   echo "  --metric-port <PORT>                    Port Metric (défaut: 9545)"
   echo "  --auth-file <FILE>                      Fichier d'authentification"
   echo "  --nombre-noeuds-max <NOMBRE>            Nombre maximum de nœuds (défaut: 25)"
+  echo "  --priv-key-encoding <PASSWORD>          Mot de passe pour le chiffrement de la clé"
   echo "  --help                                  Afficher cette aide"
 }
 
@@ -29,6 +30,7 @@ PROM_PORT=9090
 NB_NODES_MAX=25
 AUTH_FILE="auth.toml"
 EST_BOOTNODE="false"
+ENCODING="PASSWORD"
 
 # Analyse des arguments
 while [[ $# -gt 0 ]]; do
@@ -67,7 +69,11 @@ while [[ $# -gt 0 ]]; do
       shift 2
       ;;
     --auth-file)
-	  AUTH_FILE="$2"
+	    AUTH_FILE="$2"
+      shift 2
+      ;;
+    --priv-key-encoding)
+      ENCODING="$2"
       shift 2
       ;;
     --nombre-noeuds-max)
@@ -159,7 +165,7 @@ case $MODE in
         echo "Démarrage du nœud existant..."
 
         if [ -f "./data-node/Node-$NUM_DIR/key.enc" ]; then
-          openssl enc -d -aes-256-cbc -in ./data-node/Node-$NUM_DIR/key.enc -out ./data-node/Node-$NUM_DIR/key -pass pass:password
+          openssl enc -d -aes-256-cbc -in ./data-node/Node-$NUM_DIR/key.enc -out ./data-node/Node-$NUM_DIR/key -pass pass:$ENCODING
           echo "Clé déchiffrée dans ./data-node/Node-$NUM_DIR/key"
         else
           echo "Fichier ./data-node/Node-$NUM_DIR/key.enc introuvable pour déchiffrement."
@@ -193,8 +199,8 @@ esac
 echo "Opération terminée."
 
 echo "Chiffrement de la clé..."
-openssl enc -aes-256-cbc -salt -in ./data-node/Node-$NUM_DIR/key -out ./data-node/Node-$NUM_DIR/key.enc -pass pass:password
-rm ./data-node/Node-$NUM_DIR/key
+openssl enc -aes-256-cbc -salt -in ./data-node/Node-$NUM_DIR/key -out ./data-node/Node-$NUM_DIR/key.enc -pass pass:$ENCODING
+shred -u ./data-node/Node-$NUM_DIR/key
 
 if ! docker compose ps -a | grep -q prometheus; then
   echo "Creation et démarrage de Prometheus..."

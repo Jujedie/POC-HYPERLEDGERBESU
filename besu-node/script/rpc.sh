@@ -2,12 +2,13 @@
 
 # Function to display usage/help
 usage() {
-  echo "Usage: $0 [--ip <ip>] [--rpc-port <port>] <login> <method> [params] "
+  echo "Usage: $0 [--ip <ip>] [--rpc-port <port>] [--password <password>] <login> <method> [params] "
   echo "  <login>    - The username for authentication"
   echo "  <method>   - The JSON-RPC method to call"
   echo "  [params]   - Optional parameters for the JSON-RPC method (can be passed as space-separated values)"
   echo "  [--ip]     - Optional IP address (default from .env if not provided)"
   echo "  [--rpc-port] - Optional RPC port (default from .env if not provided)"
+  echo "  [--password] - Optional password (will prompt if not provided)"
   exit 0
 }
 
@@ -16,6 +17,7 @@ if [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]]; then
   usage
 fi
 
+PASSWORD=""
 # Parse optional IP and RPC port
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -25,6 +27,10 @@ while [[ $# -gt 0 ]]; do
       ;;
     --rpc-port|-r)
       RPC_PORT="$2"
+      shift 2
+      ;;
+    --password|-p)
+      PASSWORD="$2"
       shift 2
       ;;
     *)
@@ -53,11 +59,11 @@ if [[ -z "$IP_EXTERNE" ]] || [[ -z "$RPC_PORT" ]]; then
   echo "Error: IP or RPC port not set and could not be found in .env."
   exit 1
 fi
-
-# Prompt for password
-echo -n "Password: "
-read -s PASSWORD
-echo ""
+if [[ -z "$PASSWORD" ]]; then
+  echo -n "Password: "
+  read -s PASSWORD
+  echo ""
+fi
 
 # Fetch the authentication token using the provided username and password
 TOKEN=$(curl -k -X POST --data '{"username":"'"$1"'","password":"'"$PASSWORD"'"}' https://$IP_EXTERNE:$RPC_PORT/login 2>/dev/null | jq .token 2>/dev/null | tr -d '"')
@@ -69,8 +75,9 @@ if [[ -z "$TOKEN" ]]; then
 fi
 
 # Collect parameters for the JSON-RPC method (starting from the 4th argument)
-params=("${@:3}")
-params_str=$(IFS=,; echo "[${params[*]}]")
+params_json=$(printf '%s\n' "${@:3}" | jq -R . | jq -s .)
 
 # Call the JSON-RPC method and display the result
-curl -k -X POST -H "Authorization: Bearer $TOKEN" --data '{"jsonrpc":"2.0","method":"'"$2"'","params":'"$params_str"',"id":1}' https://$IP_EXTERNE:$RPC_PORT 2>/dev/null | jq .result
+curl -k -X POST -H "Authorization: Bearer $TOKEN" \
+  --data '{"jsonrpc":"2.0","method":"'"$2"'","params":'"$params_json"',"id":1}' \
+  https://$IP_EXTERNE:$RPC_PORT 2>/dev/null | jq .result

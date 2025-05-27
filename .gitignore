@@ -1,7 +1,7 @@
-.vscode
-.vscode/settings.json
-
 besu-node/config/*
 besu-node/data-node/*
+besu-node/grafana/dashboards/besu-dashboard-*
 besu-node/.env
 besu-node/certs/*
+.vscode
+.vscode/settings.json
