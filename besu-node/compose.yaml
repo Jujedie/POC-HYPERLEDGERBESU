@@ -81,7 +81,7 @@ services:
     network_mode: "host" 
     environment:
       - BESU_P2P_HOST=${IP_EXTERNE}
-      
+
   start-node:
     image: hyperledger/besu:latest
     container_name: start-node-${NUM_DIR}
@@ -120,7 +120,8 @@ services:
       - ${METRIC_PORT}:${METRIC_PORT}
     network_mode: "host" 
     environment:
-      - BESU_P2P_HOST=${IP_EXTERNE}   
+      - BESU_P2P_HOST=${IP_EXTERNE}
+
   start-bootnode:
     image: hyperledger/besu:latest
     container_name: start-bootnode-${NUM_DIR}
@@ -157,7 +158,7 @@ services:
       - ${P2P_PORT}:${P2P_PORT}
       - ${METRIC_PORT}:${METRIC_PORT}
     network_mode: "host" 
-    environment:
+    environment: 
       - BESU_P2P_HOST=${IP_EXTERNE} 
 
   prometheus:
@@ -198,7 +199,7 @@ services:
       - create-qbft
       - join-node
       - start-node
-  
+
   node-exporter:
     image: quay.io/prometheus/node-exporter:latest
     container_name: node_exporter
