@@ -202,20 +202,6 @@ echo "Chiffrement de la clé..."
 openssl enc -aes-256-cbc -salt -in ./data-node/Node-$NUM_DIR/key -out ./data-node/Node-$NUM_DIR/key.enc -pass pass:$ENCODING
 shred -u ./data-node/Node-$NUM_DIR/key
 
-if ! docker compose ps -a | grep -q prometheus; then
-  echo "Creation et démarrage de Prometheus..."
-  docker compose up -d prometheus
-  docker compose start prometheus
-fi
-
-if ! docker compose ps -a | grep -q grafana; then
-  echo "Creation et démarrage de Grafana..."
-  docker compose up -d grafana
-  docker compose start grafana
-fi
-
-if ! docker compose ps -a | grep -q node-exporter; then
-  echo "Creation et démarrage de Node Exporter..."
-  docker compose up -d node-exporter
-  docker compose start node-exporter
-fi
+cd script
+bash ./createDashboard.sh --ip $IP_EXTERNE --rpc-port $RPC_PORT Node Node
+cd ../
