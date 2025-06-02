@@ -2,10 +2,11 @@
 
 usage() {
   echo "Usage: $0 [--ip <ip>] [--rpc-port <port>] <password> <login> "
-  echo "  <login>    - The username for authentication"
-  echo "  <password> - password"
-  echo "  [--ip]     - Optional IP address (default from .env if not provided)"
+  echo "  <login>      - The username for authentication"
+  echo "  <password>   - password"
+  echo "  [--ip]       - Optional IP address (default from .env if not provided)"
   echo "  [--rpc-port] - Optional RPC port (default from .env if not provided)"
+  echo "  --help        - Display this help message"
   exit 0
 }
 
@@ -19,6 +20,10 @@ while [[ $# -gt 0 ]]; do
     --rpc-port|-r)
       PORT="$2"
       shift 2
+      ;;
+    --help)
+      usage
+      exit 0
       ;;
     *)
       break
